@@ -1,4 +1,5 @@
-.lineProduct{
+
+ .lineProduct {
     width: 95%;
     display: flex;
     height: 1px;
@@ -7,57 +8,55 @@
     margin-top: 30px;
 }
 
-.form-products{
-    margin-top: 100px;
+.form-products {
+    margin-top: 20px;
+}
+
+.row_ProductsLeft, .row_ProductsRight {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 }
 
 .row_ProductsLeft{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+    margin-left: 8%;
 }
 
-.row_ProductsRight{
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-}
-
-.form-up{
+.form-up {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;  
 }
 
-.input-group-products, .input-group-productsDown{
+.input-group-products, .input-group-productsDown {
     display: flex;
     flex-direction: column;
-    margin-left: 30vmin;
-    margin-top: 30px;
+    margin: 3vw;  
 }
 
-.input-group-productsDown{
+.input-group-productsDown {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
 }
 
-.labelName {
-    align-items: flex-start;
-    font-size: 20px; 
+.label-product{
+    font-size: calc(10px + 1vw); 
     margin-bottom: 10px;
 }
 
-.form-control{
-    border-radius: 2px; 
-    background-color: #D9D9D9;  
+.form-control-products {
+    border-radius: 2px;
+    background-color: #D9D9D9;
     border: none;
     padding: 15px;
-    width: 300px;
+    width: 80%;  
+    max-width: 300px; 
 }
 
-.add_product_button{
+.add_product_button {
     border: none;
     border-radius: 5px;
     background-color: #30348C;
@@ -65,11 +64,69 @@
     font-size: 15px;
     cursor: pointer;
     padding: 10px;
-    margin-top: 8%;    
+    margin-top: 3%;    
     filter: drop-shadow(3px 5px 5px rgba(0, 0, 0, 0.3));
 }
 
-.add_product_button:Hover{
+.add_product_button:hover {
     background-color: #7a7878;
 }
 
+@media (max-width: 768px) {
+    .form-up, .row_ProductsLeft, .row_ProductsRight {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-group-products, .input-group-productsDown {
+        margin: 5% auto;
+    }
+
+    .form-control-products {
+        width: 90%;  
+    }
+
+    .add_product_button {
+        width: 90%;  
+        margin-top: 20px;
+    }
+
+    .labelName {
+        font-size: 16px; 
+    }
+}
+
+
+.progress-loader {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    background: #b3b8ec;
+    height: 10px;
+    border-radius: 7px;
+  }
+  
+  .progress {
+    width: 1px;
+    height: 10px;
+    border-radius: 7px;
+    background: #30348C;
+    transition: 0.5s;
+    animation: loading_44 5s cubic-bezier(.4,1.01,1,1) infinite;
+  }
+  
+  @keyframes loading_44 {
+    0% {
+      width: 0%;
+    }
+  
+    50% {
+      width: 100%;
+    }
+  
+    100% {
+      width: 0%;
+    }
+  }

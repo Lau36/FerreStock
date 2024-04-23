@@ -110,7 +110,7 @@ function Login() {
       </div>
       <div className='derecha-login'>
         <div className='logo'>
-          <img src="/images/ferremax.png" alt="Logo de la empresa" />
+          <img src="../Resources/CompanyLogo.png" alt="Logo de la empresa" />
         </div>
       </div>
     </section>

@@ -64,7 +64,10 @@ function Register() {
   return (
     <div className="container">
       <div className="img-container">
-        <img src="/images/ferremax.png" alt="Descripción de la imagen" />
+        <img
+          src="../Resources/CompanyLogo.png"
+          alt="Descripción de la imagen"
+        />
       </div>
       <div className="register-container">
         <div className="form-container">

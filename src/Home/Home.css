@@ -128,4 +128,11 @@
   }
   
   .close_modal {
+    border: none;
+    background-color: #cc0000;
+    font-size: 15px;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
   }
