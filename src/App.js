@@ -1,10 +1,8 @@
 import AppRouter from "./AppRouter";
 import "./App.css";
-import Register from "./register/register";
-import "./register/register.css"
 
 function App() {
-  return <Register />;
+  return <AppRouter />;
 }
 
 export default App;
