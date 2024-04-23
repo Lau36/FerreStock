@@ -1,0 +1,28 @@
+.imageNav{
+    height: 85px;
+    width: auto;
+    padding: 10px;
+  }
+  
+  .navbarListado {
+      list-style: none;
+      display: flex;
+      color: #000000;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .navbarItems {
+      display: flex;
+      margin-left: auto; 
+      margin-top: 45px;
+      padding: 20px;
+    }
+    
+    .navbar-home {
+      text-decoration: none;
+      color: #000000;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      font-size: 20px;
+    }
+    
