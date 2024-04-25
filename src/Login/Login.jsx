@@ -37,6 +37,7 @@ function Login() {
                     setUsername('');
                     setPassword('');
                     localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('loggedIn', true )
                     navigate("/Home");
                     sessionStorage.setItem("email", response.data.email);
                     sessionStorage.setItem("id", response.data.user_id);

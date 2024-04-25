@@ -1,9 +1,30 @@
 import React from "react";
 import "./Navbar.css";
 import logo from "../Resources/logoNavbar.png";
+import { logout } from '../api/api'; 
+import { createBrowserHistory } from 'history';
 
 //Navbar
 function Navbar() {
+
+    const tokenAccess = localStorage.getItem("token");
+    const history = createBrowserHistory();
+    const handleLogout = async () => {
+        try {
+        const response = await logout(tokenAccess);
+        
+        if (response.status === 200) {
+            window.localStorage.clear();
+            window.sessionStorage.clear();
+            history.replace('/');
+            window.location.href="./";
+            console.log("deslogueado papi")
+        }
+    }catch (error) {
+        console.error('Error al iniciar sesion:', error);
+    }
+    };
+
     return (
         <nav
             className="navbar navbar-expand-lg"
@@ -28,7 +49,7 @@ function Navbar() {
                             Proveedores
                         </a>
                         <span style={{ marginRight: "30px" }}></span>
-                        <a href="/" className="navbar-home">
+                        <a  className="navbar-home" onClick={handleLogout}>
                             Cerrar sesión
                         </a>
                     </li>

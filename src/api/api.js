@@ -43,3 +43,11 @@ export const createsede = (
 export const login = (username, password) => {
   return api.post("inventory/api/token/", { username, password });
 };
+
+export const logout = (token) => {
+  return api.post("inventory/api/logout/", null, {
+    headers: {
+      'Authorization': `Token ${token}`
+    }
+  });
+};
