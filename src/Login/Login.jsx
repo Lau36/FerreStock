@@ -5,6 +5,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { login } from "../api/api";
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
+import companyLogo from "../Resources/CompanyLogo.png"
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -76,7 +77,6 @@ function Login() {
               />
               
             </div>
-
             {/* Campo de entrada para la contraseña */}
             <div className='form-group'>
               <input
@@ -110,7 +110,7 @@ function Login() {
       </div>
       <div className='derecha-login'>
         <div className='logo'>
-          <img src="../Resources/CompanyLogo.png" alt="Logo de la empresa" />
+          <img src={companyLogo} alt="Logo de la empresa" />
         </div>
       </div>
     </section>

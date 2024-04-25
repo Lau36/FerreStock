@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { createsede } from "../api/api";
 import Swal from "sweetalert2";
+import CompanyLogo from "../Resources/CompanyLogo.png";
 import "./register.css";
 
 function Register() {
@@ -64,15 +65,12 @@ function Register() {
   return (
     <div className="container">
       <div className="img-container">
-        <img
-          src="../Resources/CompanyLogo.png"
-          alt="Descripción de la imagen"
-        />
+        <img src={CompanyLogo} alt="Descripción de la imagen" />
       </div>
       <div className="register-container">
         <div className="form-container">
           <h2>REGISTRAR NUEVA SEDE</h2>
-          <div className="line"></div> {/* Línea horizontal */}
+          <div className="line"></div>
           <div className="form">
             <div className="form-group">
               <div className="row">
