@@ -24,10 +24,9 @@ h2 {
 }
 
 .img-container img {
-    width: 100%;
+    width: 75%;
     height: auto; /* Para mantener la proporción de la imagen */
 }
-
 
 .form {
     display: flex;
@@ -54,6 +53,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: -30px;
 }
 
 .form-group {
@@ -94,25 +94,24 @@ h2 {
 
 .line {
     width: 100%;
-    height: 4px;
+    height: 2px;
     background-color: #ccc;
     margin: 1px;
+    margin-bottom: 15px;
   }
-
-
 
   .input-with-icon {
     position: relative;
   }
   
   .input-with-icon input[type="password"] {
-    padding-right: 10px; /* Ajusta el espacio para el icono */
+    padding-right: 10px; 
   }
   
   .input-with-icon .toggle-password {
     position: absolute;
     top: 50%;
-    right: 20px; /* Ajusta la posición del icono horizontalmente */
+    right: 20px; 
     transform: translateY(-50%);
     border: none;
     background: transparent;
@@ -122,3 +121,4 @@ h2 {
 .col{
     padding-bottom: 20px;
 }
+

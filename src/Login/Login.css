@@ -20,6 +20,7 @@
   height: 100vh;
   width: 50%;
   margin: auto;
+  margin-left: -10%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,34 +56,42 @@
 }
 
 .textfield {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #D9D9D9;
   color: #000000;
   border-color: #ccc;
   border-radius: 10px;
-  width: 90%;
-  padding: 15px;
+  width: 85%;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-left: 0;
+  margin-right: 2.5%;
 }
 
-
-
-/* Estilos para el botón de alternancia de visibilidad de la contraseña */
 .toggle-password-button {
   position: absolute;
   top: 48.2%;
-  left: 36%; /* Lo centramos horizontalmente */
-  transform: translate(-50%, -50%); /* Lo movemos 50% del ancho y alto del propio botón */
+  left: 36%; 
+  transform: translate(-150%, -150%); 
+  position: absolute;
+  top: 50%; 
+  left: 34.5%; 
+  transform: translateY(-190%); 
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 5px; /* Ajustamos el padding para que el botón no sea demasiado grande */
+  padding: 1px; 
+}
+
+@media screen and (max-width: 400px) {
+  .toggle-password-button {
+    transform: translateY(-120%);
+  }
 }
 
 /* Estilos para el campo de entrada de contraseña */
-
-
 .login-button {
   padding: 1.5vh;
   background-color: #30348C;
