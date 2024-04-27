@@ -73,16 +73,12 @@
 .toggle-password-button {
   position: absolute;
   top: 48.2%;
-  left: 36%; 
-  transform: translate(-150%, -150%); 
-  position: absolute;
-  top: 50%; 
-  left: 34.5%; 
-  transform: translateY(-190%); 
+  left: 38%; /* Lo centramos horizontalmente */
+  transform: translate(-50%, -50%); /* Lo movemos 50% del ancho y alto del propio botón */
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 1px; 
+  padding: 5px; /* Ajustamos el padding para que el botón no sea demasiado grande */
 }
 
 @media screen and (max-width: 400px) {
