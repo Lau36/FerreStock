@@ -1,0 +1,30 @@
+.loadingPage{
+    background-color: #BBBFBA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.logoContainer {
+    max-width: 700px; 
+}
+  
+.logoLoading{
+    width: 15vh; 
+    height: 100%; 
+    max-width: 100%; 
+}
+
+.rotating {
+    animation: rotation 1.5s infinite linear; 
+}
+  
+@keyframes rotation {
+    from {
+      transform: rotate(0deg); 
+    }
+    to {
+      transform: rotate(360deg); 
+    }
+  }
