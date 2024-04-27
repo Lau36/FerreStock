@@ -1,0 +1,123 @@
+.inventory-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    height: auto;
+    overflow-x: hidden;
+    background-color: #30348C;
+}
+
+.container-productos2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 10px;
+    overflow-y: auto;
+    height: auto;
+   
+}
+
+@media screen and (min-width: 768px) {
+    .container-productos2 {
+        height: 740px;
+    }
+}
+
+.container-productos2 input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+
+.productos-grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.producto-card2 {
+    background-color: rgb(172, 159, 159);
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.producto-card2 img {
+    max-width: 100%;
+    height: auto;
+}
+
+.producto-card2 h3 {
+    margin: 10px 0;
+}
+
+.producto-card2 p {
+    font-weight: bold;
+}
+
+.container-venta2 {
+    padding: 20px;
+}
+
+
+.cerrar-venta {
+    display: block;
+    margin: 20px auto;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cerrar-venta:hover {
+    background-color: #cc0000;
+}
+
+@media screen and (min-width: 768px) {
+    .inventory-container {
+        grid-template-columns: 3fr 1fr;
+    }
+}
+
+.container-venta2 {
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; 
+}
+
+.agregar-producto2 {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.agregar-producto2:hover {
+    background-color: #0056b3;
+}
+
+.container-buttonModal2 {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.close_modal {
+    border: none;
+    background-color: #cc0000;
+    font-size: 15px;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+}

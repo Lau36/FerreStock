@@ -8,7 +8,6 @@ const endpoints = {
 
 const token = () => {
   const tokenAccess = localStorage.getItem("token");
-  console.log("ESTE ES EL TOKEN", tokenAccess);
   return tokenAccess;
 };
 

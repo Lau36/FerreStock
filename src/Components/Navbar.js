@@ -18,7 +18,6 @@ function Navbar() {
             window.sessionStorage.clear();
             history.replace('/');
             window.location.href="./";
-            console.log("deslogueado papi")
         }
     }catch (error) {
         console.error('Error al iniciar sesion:', error);
@@ -41,7 +40,7 @@ function Navbar() {
                             Inicio
                         </a>
                         <span style={{ marginRight: "30px" }}></span>
-                        <a href="/" className="navbar-home">
+                        <a href="/Inventario" className="navbar-home">
                             Inventario
                         </a>
                         <span style={{ marginRight: "30px" }}></span>
