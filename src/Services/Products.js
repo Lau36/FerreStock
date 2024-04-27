@@ -3,7 +3,6 @@ import axios from "axios";
 
 const addProducts = async (body) => {
   const tokenAccess = localStorage.getItem("token");
-  console.log("ESTE ES EL TOKEN", tokenAccess);
   const config = {
     headers: {
       Authorization: `Token ${tokenAccess}`,
