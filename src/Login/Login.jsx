@@ -6,11 +6,13 @@ import { login } from "../api/api";
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 import companyLogo from "../Resources/CompanyLogo.png"
+import LoadingPage from "../Components/LoadingPage";
 
 function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
@@ -23,11 +25,13 @@ function Login() {
 }
 
   const handleSubmit = async () => {
+    setLoading(true)
     try {
+      
         const response = await login(username, password);
 
         if (response.status === 200) {
-          
+          setLoading(false)
             Swal.fire({
                 icon: 'success',
                 title: 'Login exitoso',
@@ -49,6 +53,7 @@ function Login() {
             throw new Error('Error al iniciar sesion');
         }
     } catch (error) {
+      setLoading(false)
         console.error('Error al iniciar sesion:', error);
         Swal.fire({
             icon: 'error',
@@ -59,7 +64,11 @@ function Login() {
 }
 
   return (
-    <section id="pantalla-dividida" className='pantalla-dividida'>
+    <>
+    {loading ? (
+    <LoadingPage/>
+    ):(
+      <section id="pantalla-dividida" className='pantalla-dividida'>
       <div className='izquierda-login'>
         <div className='login-container'>
           <div className='login-form'>
@@ -115,6 +124,8 @@ function Login() {
         </div>
       </div>
     </section>
+    )}
+    </>
   );
 }
 
