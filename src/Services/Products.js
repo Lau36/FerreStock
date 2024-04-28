@@ -18,4 +18,36 @@ const addProducts = async (body) => {
   return response.data;
 };
 
-export { addProducts };
+const getProducts = async () => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+
+  const response = await axios.get(
+    endpoints.products.getProducts,
+    config
+  );
+
+  return response.data;
+};
+
+const getProductDetails = async (productId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+
+  const response = await axios.get(
+    `${endpoints.products.getProducts}${productId}/`,
+    config
+  );
+
+  return response.data;
+};
+
+export { addProducts, getProducts, getProductDetails };
