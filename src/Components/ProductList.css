@@ -110,6 +110,9 @@
 
 .agregar-button {
     background-color: green;
+}
+
+.agregar-button, .detalles-button, .edit-button, .close-button{
     color: white;
     border: none;
     padding: 5px 0;
@@ -119,9 +122,46 @@
 
 .detalles-button {
     background-color: blue;
-    color: white;
-    border: none;
-    padding: 5px 0;
-    border-radius: 3px;
-    cursor: pointer;
 }
+
+.edit-button{
+    width: 100px;
+    background-color: #BBBFBA;
+}
+
+.edit-button-container{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-button-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    left: 30px; 
+  }
+  
+.close-button {
+    width: 20px;
+    background-color: #cc0000;
+}
+
+.container-buttonModal {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+  }
+  
+  .close_modal {
+    border: none;
+    background-color: #cc0000;
+    font-size: 15px;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    border-radius: 5px;
+  }
+
+

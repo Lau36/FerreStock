@@ -121,12 +121,14 @@
   right: 10px; 
 }
 
-.close_modal {
-  border: none;
+.close-button-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  left: 30px; 
+}
+
+.close-button {
+  width: 20px;
   background-color: #cc0000;
-  font-size: 15px;
-  padding: 10px;
-  cursor: pointer;
-  color: white;
-  border-radius: 5px;
 }

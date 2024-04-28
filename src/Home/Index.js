@@ -2,7 +2,7 @@
 import "../Home/Home.css";
 import Navbar from "../Components/Navbar";
 import React, { useState, useEffect } from "react";
-import Modal from "react-modal";
+import Modal from "react-bootstrap/Modal";
 import AddProducts from "../Components/AddProducts";
 import { getProducts } from "../Services/Products";
 import ProductList from "../Components/ProductList";
@@ -111,8 +111,10 @@ function Home() {
                         };
                         setProductosSeleccionados(nuevosProductos);
                       }}
-                    /> - Precio Total:{" "}
-                    {isNaN(producto.precioTotal) || typeof producto.precioTotal !== 'number'
+                    />{" "}
+                    - Precio Total:{" "}
+                    {isNaN(producto.precioTotal) ||
+                    typeof producto.precioTotal !== "number"
                       ? 0
                       : `$${producto.precioTotal.toFixed(2)}`}
                   </p>
@@ -125,32 +127,21 @@ function Home() {
             <button className="agregar-producto" onClick={openModal}>
               <span>+</span> Agregar producto
             </button>
-            <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={closeModal}
-              contentLabel="Agregar Producto Modal"
-              style={{
-                content: {
-                  width: "auto",
-                  height: "auto",
-                  maxWidth: "75%",
-                  maxHeight: "75%",
-                  margin: "auto",
-                },
-              }}
-            >
+            <Modal show={modalIsOpen} onHide={closeModal}>
+              <Modal.Header>
+                <div className="close-button-container">
+                  <button className="close-button" onClick={closeModal}>
+                    x
+                  </button>
+                </div>
+              </Modal.Header>
               <AddProducts />
-              <div className="container-buttonModal">
-                <button onClick={closeModal} className="close_modal">
-                  x
-                </button>
-              </div>
             </Modal>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Home;

@@ -26,10 +26,7 @@ const getProducts = async () => {
     },
   };
 
-  const response = await axios.get(
-    endpoints.products.getProducts,
-    config
-  );
+  const response = await axios.get(endpoints.products.getProducts, config);
 
   return response.data;
 };
@@ -50,4 +47,19 @@ const getProductDetails = async (productId) => {
   return response.data;
 };
 
-export { addProducts, getProducts, getProductDetails };
+const updateProduct = async (body, productId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const response = await axios.put(
+    endpoints.products.updateProduct(productId),
+    body,
+    config
+  );
+  return response.data;
+};
+
+export { addProducts, getProducts, getProductDetails, updateProduct };
