@@ -1,23 +1,34 @@
 import { useState } from "react";
-import { addProducts } from "../Services/Products";
+import { updateProduct } from "../Services/Products";
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import logo from "../Resources/logoNavbar.png";
 import "./AddProducts.css";
 
-function AddProducts() {
+function UpdateProduct({
+  productID,
+  name,
+  description,
+  price,
+  stock,
+  pending_stock,
+}) {
   const navigate = useNavigate();
   const [dataProduct, setDataProduct] = useState({
-    name: "",
-    description: "",
-    price: "",
-    stock: "",
-    pending_stock: "",
+    name: name,
+    description: description,
+    price: price,
+    stock: stock,
+    pending_stock: pending_stock,
   });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setDataProduct({ ...dataProduct, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setDataProduct((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -28,13 +39,13 @@ function AddProducts() {
     };
     console.log("La info de la data es: ", data);
 
-    addProducts(data).then((Response) => {
+    updateProduct(data, productID).then((Response) => {
       try {
         setLoading(false);
         Swal.fire({
           icon: "success",
           title: "Operación exitosa",
-          text: "Ha registrado el producto de forma exitosa",
+          text: "Has actualizado tu producto de forma exitosa",
           confirmButtonText: "Continuar",
           allowOutsideClick: false,
           showCancelButton: false,
@@ -52,7 +63,7 @@ function AddProducts() {
     Swal.fire({
       icon: "error",
       title: "Algo salió mal",
-      text: "Ocurrió un error al crear el curso, intentalo de nuevo",
+      text: "Ocurrió un error al crear actualizar el producto, intentalo de nuevo",
       confirmButtonText: "Continuar",
       allowOutsideClick: false,
       showCancelButton: false,
@@ -64,9 +75,6 @@ function AddProducts() {
     <>
       <div className="lineProduct"></div>
       {loading ? (
-        // <div className="progress-loader">
-        //   <div className="progress"></div>
-        // </div>
         <div className="logo-Container-products">
           <img
             src={logo}
@@ -84,6 +92,7 @@ function AddProducts() {
                   type="text"
                   className="form-control-products"
                   name="name"
+                  value={dataProduct.name}
                   placeholder="Nombre del producto"
                   onChange={handleChange}
                   required
@@ -95,6 +104,7 @@ function AddProducts() {
                   type="number"
                   className="form-control-products"
                   name="stock"
+                  value={dataProduct.stock}
                   placeholder="Cantidad de producto"
                   onChange={handleChange}
                   required
@@ -108,7 +118,8 @@ function AddProducts() {
                   type="text"
                   className="form-control-products"
                   name="price"
-                  placeholder="Precio"
+                  value={dataProduct.price}
+                  placeholder="$0.00"
                   onChange={handleChange}
                   required
                 />
@@ -119,7 +130,8 @@ function AddProducts() {
                   type="number"
                   className="form-control-products"
                   name="pending_stock"
-                  placeholder="Unidades separadas"
+                  value={dataProduct.pending_stock}
+                  placeholder="#"
                   onChange={handleChange}
                   required
                 />
@@ -132,12 +144,13 @@ function AddProducts() {
               type="text"
               className="form-control-products"
               name="description"
-              placeholder="Descripcion del producto"
+              value={dataProduct.description}
+              placeholder="Ingrese una descripción"
               onChange={handleChange}
               required
             />
             <button type="submit" className="add_product_button">
-              Agregar producto
+              Guardar cambios
             </button>
           </div>
         </form>
@@ -146,4 +159,4 @@ function AddProducts() {
   );
 }
 
-export default AddProducts;
+export default UpdateProduct;

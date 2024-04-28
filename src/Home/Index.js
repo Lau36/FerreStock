@@ -1,53 +1,28 @@
+// Home.js
 import "../Home/Home.css";
 import Navbar from "../Components/Navbar";
-import React, { useState } from "react";
-import Modal from "react-modal";
+import React, { useState, useEffect } from "react";
+import Modal from "react-bootstrap/Modal";
 import AddProducts from "../Components/AddProducts";
+import { getProducts } from "../Services/Products";
+import ProductList from "../Components/ProductList";
 
-// Products
-const productos = [
-  { id: 1, nombre: "Martillo", precio: 10.99, imagen: "url_imagen" },
-  { id: 2, nombre: "Destornillador", precio: 5.99, imagen: "url_imagen" },
-  { id: 3, nombre: "Sierra", precio: 15.99, imagen: "url_imagen" },
-  { id: 4, nombre: "Taladro eléctrico", precio: 39.99, imagen: "url_imagen" },
-  { id: 5, nombre: "Cinta métrica", precio: 3.99, imagen: "url_imagen" },
-  { id: 6, nombre: "Llave ajustable", precio: 7.99, imagen: "url_imagen" },
-  { id: 7, nombre: "Alicates", precio: 6.99, imagen: "url_imagen" },
-  { id: 8, nombre: "Clavos de acero", precio: 1.99, imagen: "url_imagen" },
-  {
-    id: 9,
-    nombre: "Tornillos de alta resistencia",
-    precio: 2.99,
-    imagen: "url_imagen",
-  },
-  { id: 10, nombre: "Cepillo para madera", precio: 8.99, imagen: "url_imagen" },
-  {
-    id: 11,
-    nombre: "Pintura para interiores",
-    precio: 12.99,
-    imagen: "url_imagen",
-  },
-  { id: 12, nombre: "Brocas para metal", precio: 4.99, imagen: "url_imagen" },
-  { id: 13, nombre: "Lija de grano fino", precio: 2.49, imagen: "url_imagen" },
-  { id: 14, nombre: "Barniz para madera", precio: 9.99, imagen: "url_imagen" },
-  { id: 15, nombre: "Pegamento multiusos", precio: 3.49, imagen: "url_imagen" },
-  {
-    id: 16,
-    nombre: "Cerradura de seguridad",
-    precio: 19.99,
-    imagen: "url_imagen",
-  },
-  { id: 17, nombre: "Bombillo LED", precio: 1.99, imagen: "url_imagen" },
-  { id: 18, nombre: "Escalera plegable", precio: 29.99, imagen: "url_imagen" },
-  { id: 19, nombre: "Tubo de PVC", precio: 2.99, imagen: "url_imagen" },
-  { id: 20, nombre: "Cable eléctrico", precio: 0.99, imagen: "url_imagen" },
-];
-
-//Principal function of Home Page
+// Principal function of Home Page
 function Home() {
+  const [productos, setProductos] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  /*Add product to car*/
+  useEffect(() => {
+    const fetchData = async () => {
+      const productosData = await getProducts();
+      setProductos(productosData);
+    };
+
+    fetchData();
+  }, []);
+
+  /* Add product to cart */
   const agregarProductoSeleccionado = (producto) => {
     const productoExistente = productosSeleccionados.find(
       (p) => p.id === producto.id
@@ -59,7 +34,7 @@ function Home() {
           return {
             ...p,
             cantidad: p.cantidad + 1,
-            precioTotal: p.precioTotal + producto.precio,
+            precioTotal: (p.cantidad + 1) * producto.price,
           };
         }
         return p;
@@ -68,15 +43,20 @@ function Home() {
     } else {
       setProductosSeleccionados([
         ...productosSeleccionados,
-        { ...producto, cantidad: 1, precioTotal: producto.precio },
+        { ...producto, cantidad: 1, precioTotal: producto.price },
       ]);
     }
+  };
+
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   /*Refresh modal and close sale*/
   const cerrarVenta = () => {
     setProductosSeleccionados([]);
   };
+
   /*Modal*/
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -88,25 +68,23 @@ function Home() {
     setModalIsOpen(false);
   };
 
-  /* Design */
+  // Design
   return (
     <div>
       <Navbar />
       <div className="home-container">
         <div className="container-productos">
-          <input type="text" placeholder="Buscar productos..." />
-          <div className="productos-grid">
-            {productos.map((producto) => (
-              <div key={producto.id} className="producto-card">
-                <img src={producto.imagen} alt={producto.nombre} />
-                <h3>{producto.nombre}</h3>
-                <p>${producto.precio.toFixed(2)}</p>
-                <button onClick={() => agregarProductoSeleccionado(producto)}>
-                  Agregar
-                </button>
-              </div>
-            ))}
-          </div>
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={searchTerm}
+            onChange={handleSearchTermChange}
+          />
+          <ProductList
+            productos={productos}
+            agregarProductoSeleccionado={agregarProductoSeleccionado}
+            searchTerm={searchTerm}
+          />
         </div>
         <div className="container-venta">
           <div className="card">
@@ -118,8 +96,27 @@ function Home() {
               {productosSeleccionados.map((producto, index) => (
                 <div key={index} className="producto-seleccionado">
                   <p>
-                    {producto.nombre} - Cantidad: {producto.cantidad} - Precio
-                    Total: ${producto.precioTotal.toFixed(2)}
+                    {producto.name} - Cantidad:{" "}
+                    <input
+                      type="number"
+                      min="1"
+                      value={producto.cantidad}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value);
+                        const nuevosProductos = [...productosSeleccionados];
+                        nuevosProductos[index] = {
+                          ...producto,
+                          cantidad: value,
+                          precioTotal: (value || 0) * producto.price,
+                        };
+                        setProductosSeleccionados(nuevosProductos);
+                      }}
+                    />{" "}
+                    - Precio Total:{" "}
+                    {isNaN(producto.precioTotal) ||
+                    typeof producto.precioTotal !== "number"
+                      ? 0
+                      : `$${producto.precioTotal.toFixed(2)}`}
                   </p>
                 </div>
               ))}
@@ -130,26 +127,15 @@ function Home() {
             <button className="agregar-producto" onClick={openModal}>
               <span>+</span> Agregar producto
             </button>
-            <Modal
-              isOpen={modalIsOpen}
-              onRequestClose={closeModal}
-              contentLabel="Agregar Producto Modal"
-              style={{
-                content: {
-                  width: "auto",
-                  height: "auto",
-                  maxWidth: "75%",
-                  maxHeight: "75%",
-                  margin: "auto",
-                },
-              }}
-            >
+            <Modal show={modalIsOpen} onHide={closeModal}>
+              <Modal.Header>
+                <div className="close-button-container">
+                  <button className="close-button" onClick={closeModal}>
+                    x
+                  </button>
+                </div>
+              </Modal.Header>
               <AddProducts />
-              <div className="container-buttonModal">
-                <button onClick={closeModal} className="close_modal">
-                  x
-                </button>
-              </div>
             </Modal>
           </div>
         </div>
