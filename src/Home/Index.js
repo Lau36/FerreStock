@@ -27,7 +27,7 @@ function Home() {
     const productoExistente = productosSeleccionados.find(
       (p) => p.id === producto.id
     );
-  
+
     if (productoExistente) {
       const productosActualizados = productosSeleccionados.map((p) => {
         if (p.id === producto.id) {
@@ -46,7 +46,7 @@ function Home() {
         { ...producto, cantidad: 1, precioTotal: producto.price },
       ]);
     }
-  };  
+  };
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value);
