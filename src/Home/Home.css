@@ -1,8 +1,11 @@
 .home-container {
+  /* background-color: #30348C; */
+  background-color: #BBBFBA;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   height: auto;
+  margin-top: 20px;
 }
 
 .container-productos {
@@ -131,4 +134,9 @@
 .close-button {
   width: 20px;
   background-color: #cc0000;
+}
+
+.search-products{
+  border: none;
+  border-radius: 10px;
 }

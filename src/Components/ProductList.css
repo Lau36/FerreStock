@@ -9,8 +9,9 @@
 }
 
 .producto-card {
+    background-color: #ffff;
     border: 1px solid #ccc;
-    padding: 10px;
+    padding: 15px;
 }
 
 .producto-card img {
@@ -126,7 +127,11 @@
 
 .edit-button{
     width: 100px;
-    background-color: #BBBFBA;
+    background-color: #30348C;
+}
+
+.edit-button:hover {
+    background-color: #7a7878;
 }
 
 .edit-button-container{

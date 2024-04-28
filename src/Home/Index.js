@@ -70,13 +70,14 @@ function Home() {
 
   // Design
   return (
-    <div>
+    <>
       <Navbar />
       <div className="home-container">
         <div className="container-productos">
           <input
             type="text"
             placeholder="Buscar productos..."
+            className="search-products"
             value={searchTerm}
             onChange={handleSearchTermChange}
           />
@@ -140,7 +141,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
