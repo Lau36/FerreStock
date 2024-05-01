@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import AddProducts from "../Components/AddProducts";
 import { getProducts } from "../Services/Products";
 import ProductList from "../Components/ProductList";
+import { ReactComponent as SearchIcon } from '../Resources/lupa-de-busqueda.svg';
 
 // Principal function of Home Page
 function Home() {
@@ -74,13 +75,16 @@ function Home() {
       <Navbar />
       <div className="home-container">
         <div className="container-productos">
-          <input
-            type="text"
-            placeholder="Buscar productos..."
-            className="search-products"
-            value={searchTerm}
-            onChange={handleSearchTermChange}
-          />
+          <div className="search-container">
+            <SearchIcon className="search-icon" />
+            <input
+              type="text"
+              placeholder="Buscar productos..."
+              className="search-products"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+            />
+          </div>
           <ProductList
             productos={productos}
             agregarProductoSeleccionado={agregarProductoSeleccionado}
@@ -115,7 +119,7 @@ function Home() {
                     />{" "}
                     - Precio Total:{" "}
                     {isNaN(producto.precioTotal) ||
-                    typeof producto.precioTotal !== "number"
+                      typeof producto.precioTotal !== "number"
                       ? 0
                       : `$${producto.precioTotal.toFixed(2)}`}
                   </p>
@@ -132,7 +136,7 @@ function Home() {
               <Modal.Header>
                 <div className="close-button-container">
                   <button className="close-button" onClick={closeModal}>
-                    x
+                    X
                   </button>
                 </div>
               </Modal.Header>
