@@ -1,12 +1,23 @@
 /* ProductList.css */
-
-/* ProductList.css */
-
 .productos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    gap: 15px;
 }
+
+.productos-grid::-webkit-scrollbar {
+    width: 10px;
+}
+
+.productos-grid::-webkit-scrollbar-thumb {
+    background-color: #30348C;
+    border-radius: 5px;
+}
+
+.productos-grid::-webkit-scrollbar-track {
+    background-color: #ffff;
+}
+
 
 .producto-card {
     background-color: #ffff;
@@ -73,7 +84,7 @@
 .modal-title {
     font-weight: bold;
     text-align: center;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .modal-body {
@@ -85,9 +96,9 @@
     text-align: center;
 }
 
-.modal-body p {
+.modal-body p.text {
     font-weight: normal;
-    text-align: left; 
+    text-align: left;
 }
 
 .modal-footer {
@@ -97,9 +108,9 @@
 .close {
     background-color: red;
     color: black;
-    margin: 0 auto; 
+    margin: 0 auto;
     margin-top: 5%;
-    display: block; 
+    display: block;
 }
 
 .close:hover,
@@ -113,7 +124,10 @@
     background-color: rgb(6, 114, 6);
 }
 
-.agregar-button, .detalles-button, .edit-button, .close-button{
+.agregar-button,
+.detalles-button,
+.edit-button,
+.close-button {
     color: white;
     border: none;
     padding: 5px 0;
@@ -125,7 +139,7 @@
     background-color: #30348C;
 }
 
-.edit-button{
+.edit-button {
     width: 100px;
     background-color: #30348C;
 }
@@ -134,32 +148,32 @@
     background-color: #7a7878;
 }
 
-.edit-button-container{
+.edit-button-container {
     margin-top: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.close-button-container {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    left: 30px; 
-  }
-  
-.close-button {
-    width: 20px;
+.close-button-containerModal {
+    position: absolute;
+    right: 10px; /* Ajusta la posición a la derecha */
+    top: 10px;
+}
+
+.close-buttonModal {
+    width: 22px;
     background-color: #cc0000;
+    border-radius: 5px;
 }
 
 .container-buttonModal {
     position: absolute;
-    top: 10px; 
-    right: 10px; 
-  }
-  
-  .close_modal {
+    top: 10px;
+    right: 10px;
+}
+
+.close_modal {
     border: none;
     background-color: #cc0000;
     font-size: 15px;
@@ -167,6 +181,16 @@
     cursor: pointer;
     color: white;
     border-radius: 5px;
-  }
+}
 
+.card-dialog .p-dialog-content {
+    padding: 0;
+}
 
+.card-content {
+    padding: 1rem;
+}
+
+.card-content h3 {
+    margin-top: 0;
+}
