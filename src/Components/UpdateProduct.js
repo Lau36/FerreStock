@@ -99,6 +99,20 @@ function UpdateProduct({
                 />
               </div>
               <div className="input-group-products">
+                <label className="label-product">
+                  Descripción del producto
+                </label>
+                <textarea
+                  type="text"
+                  className="input-description"
+                  name="description"
+                  value={dataProduct.description}
+                  placeholder="Ingrese una descripción"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="input-group-products">
                 <label className="label-product">Cantidad de producto</label>
                 <input
                   type="number"
@@ -139,19 +153,6 @@ function UpdateProduct({
             </div>
           </div>
           <div className="input-group-productsDown">
-            <label className="label-product-down">
-              Descripción del producto
-            </label>
-            <textarea
-              type="text"
-              rows="5"
-              className="form-control-products"
-              name="description"
-              value={dataProduct.description}
-              placeholder="Ingrese una descripción"
-              onChange={handleChange}
-              required
-            />
             <button type="submit" className="add_product_button">
               Guardar cambios
             </button>

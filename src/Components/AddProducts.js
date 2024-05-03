@@ -87,6 +87,19 @@ function AddProducts() {
                 />
               </div>
               <div className="input-group-products">
+                <label className="label-product">
+                  Descripción del producto
+                </label>
+                <textarea
+                  type="text"
+                  className="input-description"
+                  name="description"
+                  placeholder="Descripcion del producto"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="input-group-products">
                 <label className="label-product">Cantidad de producto</label>
                 <input
                   type="number"
@@ -124,18 +137,6 @@ function AddProducts() {
             </div>
           </div>
           <div className="input-group-productsDown">
-            <label className="label-product-down">
-              Descripción del producto
-            </label>
-            <textarea
-              type="text"
-              rows="5"
-              className="form-control-products-down"
-              name="description"
-              placeholder="Descripcion del producto"
-              onChange={handleChange}
-              required
-            />
             <button type="submit" className="add_product_button">
               Agregar producto
             </button>
