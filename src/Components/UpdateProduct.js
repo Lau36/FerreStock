@@ -139,9 +139,12 @@ function UpdateProduct({
             </div>
           </div>
           <div className="input-group-productsDown">
-            <label className="label-product">Descripción del producto</label>
-            <input
+            <label className="label-product-down">
+              Descripción del producto
+            </label>
+            <textarea
               type="text"
+              rows="5"
               className="form-control-products"
               name="description"
               value={dataProduct.description}
@@ -152,6 +155,7 @@ function UpdateProduct({
             <button type="submit" className="add_product_button">
               Guardar cambios
             </button>
+            <div className="lineProduct"></div>
           </div>
         </form>
       )}

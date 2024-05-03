@@ -64,9 +64,6 @@ function AddProducts() {
     <>
       <div className="lineProduct"></div>
       {loading ? (
-        // <div className="progress-loader">
-        //   <div className="progress"></div>
-        // </div>
         <div className="logo-Container-products">
           <img
             src={logo}
@@ -127,10 +124,13 @@ function AddProducts() {
             </div>
           </div>
           <div className="input-group-productsDown">
-            <label className="label-product">Descripción del producto</label>
-            <input
+            <label className="label-product-down">
+              Descripción del producto
+            </label>
+            <textarea
               type="text"
-              className="form-control-products"
+              rows="5"
+              className="form-control-products-down"
               name="description"
               placeholder="Descripcion del producto"
               onChange={handleChange}
@@ -139,6 +139,7 @@ function AddProducts() {
             <button type="submit" className="add_product_button">
               Agregar producto
             </button>
+            <div className="lineProduct"></div>
           </div>
         </form>
       )}

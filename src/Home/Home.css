@@ -131,6 +131,11 @@
   left: 30px;
 }
 
+.title-add-product{
+  color: #30348C;
+  text-align: center;
+}
+
 .close-button {
   width: 20px;
   background-color: #cc0000;
