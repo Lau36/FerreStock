@@ -12,6 +12,7 @@ function UpdateProduct({
   price,
   stock,
   pending_stock,
+  closeModal,
 }) {
   const navigate = useNavigate();
   const [dataProduct, setDataProduct] = useState({
@@ -42,6 +43,7 @@ function UpdateProduct({
     updateProduct(data, productID).then((Response) => {
       try {
         setLoading(false);
+        closeModal();
         Swal.fire({
           icon: "success",
           title: "Operación exitosa",

@@ -153,7 +153,7 @@ function Home() {
                   <h3 className="title-add-product">
                     Agregar un nuevo producto
                   </h3>
-                  <AddProducts />
+                  <AddProducts closeModal={closeModal} />
                 </Dialog>
               </div>
             </div>

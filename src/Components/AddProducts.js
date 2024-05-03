@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import logo from "../Resources/logoNavbar.png";
 import "./AddProducts.css";
 
-function AddProducts() {
+function AddProducts({ closeModal }) {
   const navigate = useNavigate();
   const [dataProduct, setDataProduct] = useState({
     name: "",
@@ -31,6 +31,7 @@ function AddProducts() {
     addProducts(data).then((Response) => {
       try {
         setLoading(false);
+        closeModal();
         Swal.fire({
           icon: "success",
           title: "Operación exitosa",

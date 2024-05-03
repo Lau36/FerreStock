@@ -167,6 +167,7 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm }) {
               description={product?.description}
               stock={product?.stock}
               pending_stock={product?.pending_stock}
+              closeModal={closeModal2}
             />
           </Dialog>
         </div>
