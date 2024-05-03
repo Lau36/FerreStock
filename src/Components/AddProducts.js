@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import logo from "../Resources/logoNavbar.png";
 import "./AddProducts.css";
 
-function AddProducts() {
+function AddProducts({ closeModal }) {
   const navigate = useNavigate();
   const [dataProduct, setDataProduct] = useState({
     name: "",
@@ -31,6 +31,7 @@ function AddProducts() {
     addProducts(data).then((Response) => {
       try {
         setLoading(false);
+        closeModal();
         Swal.fire({
           icon: "success",
           title: "Operación exitosa",
@@ -64,9 +65,6 @@ function AddProducts() {
     <>
       <div className="lineProduct"></div>
       {loading ? (
-        // <div className="progress-loader">
-        //   <div className="progress"></div>
-        // </div>
         <div className="logo-Container-products">
           <img
             src={logo}
@@ -85,6 +83,19 @@ function AddProducts() {
                   className="form-control-products"
                   name="name"
                   placeholder="Nombre del producto"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="input-group-products">
+                <label className="label-product">
+                  Descripción del producto
+                </label>
+                <textarea
+                  type="text"
+                  className="input-description"
+                  name="description"
+                  placeholder="Descripcion del producto"
                   onChange={handleChange}
                   required
                 />
@@ -127,18 +138,10 @@ function AddProducts() {
             </div>
           </div>
           <div className="input-group-productsDown">
-            <label className="label-product">Descripción del producto</label>
-            <input
-              type="text"
-              className="form-control-products"
-              name="description"
-              placeholder="Descripcion del producto"
-              onChange={handleChange}
-              required
-            />
             <button type="submit" className="add_product_button">
               Agregar producto
             </button>
+            <div className="lineProduct"></div>
           </div>
         </form>
       )}

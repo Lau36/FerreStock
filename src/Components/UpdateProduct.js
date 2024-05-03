@@ -12,6 +12,7 @@ function UpdateProduct({
   price,
   stock,
   pending_stock,
+  closeModal,
 }) {
   const navigate = useNavigate();
   const [dataProduct, setDataProduct] = useState({
@@ -42,6 +43,7 @@ function UpdateProduct({
     updateProduct(data, productID).then((Response) => {
       try {
         setLoading(false);
+        closeModal();
         Swal.fire({
           icon: "success",
           title: "Operación exitosa",
@@ -99,6 +101,20 @@ function UpdateProduct({
                 />
               </div>
               <div className="input-group-products">
+                <label className="label-product">
+                  Descripción del producto
+                </label>
+                <textarea
+                  type="text"
+                  className="input-description"
+                  name="description"
+                  value={dataProduct.description}
+                  placeholder="Ingrese una descripción"
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="input-group-products">
                 <label className="label-product">Cantidad de producto</label>
                 <input
                   type="number"
@@ -139,19 +155,10 @@ function UpdateProduct({
             </div>
           </div>
           <div className="input-group-productsDown">
-            <label className="label-product">Descripción del producto</label>
-            <input
-              type="text"
-              className="form-control-products"
-              name="description"
-              value={dataProduct.description}
-              placeholder="Ingrese una descripción"
-              onChange={handleChange}
-              required
-            />
             <button type="submit" className="add_product_button">
               Guardar cambios
             </button>
+            <div className="lineProduct"></div>
           </div>
         </form>
       )}

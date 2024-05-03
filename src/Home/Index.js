@@ -2,11 +2,11 @@
 import "../Home/Home.css";
 import Navbar from "../Components/Navbar";
 import React, { useState, useEffect } from "react";
-import Modal from "react-bootstrap/Modal";
 import AddProducts from "../Components/AddProducts";
 import { getProducts } from "../Services/Products";
 import ProductList from "../Components/ProductList";
-import { ReactComponent as SearchIcon } from '../Resources/lupa-de-busqueda.svg';
+import { Dialog } from "primereact/dialog";
+import { ReactComponent as SearchIcon } from "../Resources/lupa-de-busqueda.svg";
 
 // Principal function of Home Page
 function Home() {
@@ -23,7 +23,6 @@ function Home() {
     fetchData();
   }, []);
 
-  /* Add product to cart */
   const agregarProductoSeleccionado = (producto) => {
     const productoExistente = productosSeleccionados.find(
       (p) => p.id === producto.id
@@ -119,7 +118,7 @@ function Home() {
                     />{" "}
                     - Precio Total:{" "}
                     {isNaN(producto.precioTotal) ||
-                      typeof producto.precioTotal !== "number"
+                    typeof producto.precioTotal !== "number"
                       ? 0
                       : `$${producto.precioTotal.toFixed(2)}`}
                   </p>
@@ -132,16 +131,32 @@ function Home() {
             <button className="agregar-producto" onClick={openModal}>
               <span>+</span> Agregar producto
             </button>
-            <Modal show={modalIsOpen} onHide={closeModal}>
-              <Modal.Header>
-                <div className="close-button-container">
-                  <button className="close-button" onClick={closeModal}>
-                    X
-                  </button>
-                </div>
-              </Modal.Header>
-              <AddProducts />
-            </Modal>
+
+            <div>
+              {modalIsOpen && (
+                <div className="overlay" onClick={closeModal}></div>
+              )}
+              <div className="modal-container">
+                <Dialog
+                  visible={modalIsOpen}
+                  draggable={false}
+                  closable={false}
+                  modal={true}
+                  onHide={closeModal}
+                  className="dialog-update-product"
+                >
+                  <div className="close-button-container">
+                    <button className="close-button" onClick={closeModal}>
+                      X
+                    </button>
+                  </div>
+                  <h3 className="title-add-product">
+                    Agregar un nuevo producto
+                  </h3>
+                  <AddProducts closeModal={closeModal} />
+                </Dialog>
+              </div>
+            </div>
           </div>
         </div>
       </div>

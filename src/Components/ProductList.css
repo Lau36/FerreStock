@@ -3,9 +3,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
+    padding: 10px;
 }
 
 .productos-grid::-webkit-scrollbar {
+   
     width: 10px;
 }
 
@@ -16,6 +18,7 @@
 
 .productos-grid::-webkit-scrollbar-track {
     background-color: #ffff;
+    border-radius: 5px;
 }
 
 
@@ -193,4 +196,42 @@
 
 .card-content h3 {
     margin-top: 0;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /*Para cambiar el fondo entre más opaco o menos*/
+  z-index: 999; 
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; 
+  padding: 100px;
+}
+
+.dialog-update-product{
+    width: 50vw;  
+    padding: 10px;  
+}
+
+.dialog-detail-product{
+    width: 30vw;
+    padding: 15px;
+}
+
+.dialog-update-product, .dialog-detail-product{
+    background: white;
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+     /*El padding de los modales*/
 }
