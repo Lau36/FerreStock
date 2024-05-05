@@ -1,10 +1,8 @@
 .inventory-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: flex;
     height: auto;
     overflow-x: hidden;
-    background-color: #30348C;
+    background-color: #BBBFBA;
 }
 
 .container-productos2 {
@@ -14,6 +12,7 @@
     padding: 10px;
     overflow-y: auto;
     height: auto;
+    width: 100%;
    
 }
 
@@ -121,3 +120,50 @@
     color: white;
     border-radius: 5px;
 }
+
+.search-container-inventory {
+    position: relative;
+    display: flex;
+  }
+  
+  .search-icon-inventory {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-70%);
+    width: 20px;
+    height: auto;
+  }
+  .search-products-inventory {
+    padding-left: 30px;
+    border: none;
+    border-radius: 10px;
+  }
+  .select-inventory{
+    width: 15%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-right: 2%;
+    box-sizing: border-box;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .dropdown-panel {
+  background-color: white;
+  padding: 10px; /* Agrega un poco de espacio interno */
+  border-radius: 10px;
+}
+
+.dropdown-panel .p-dropdown-item {
+  padding: 8px 12px; /* Agrega un poco de espacio alrededor de cada opción */
+  border-radius: 4px; /* Redondea los bordes de cada opción */
+}
+
+.dropdown-panel .p-dropdown-item .selected-option {
+    background-color: #8ed5ff;
+    padding: 10px;
+    border-radius: 4px; /* Color de fondo para la opción seleccionada */
+  }
+  

@@ -1,106 +1,112 @@
 import "../Inventory/Inventario.css";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
-import React, { useState } from "react";
-import Modal from "react-modal";
-import AddProducts from "../Components/AddProducts";
+import { Dropdown } from 'primereact/dropdown';
+import ProductList from "../Components/ProductList";
+import { getProducts, getSedes, getProductsSede } from "../Services/Products";
+import { ReactComponent as SearchIcon } from "../Resources/lupa-de-busqueda.svg";
 
-// Products
-const productos = [
-    { id: 1, nombre: "Martillo", precio: 10.99, imagen: "url_imagen" },
-    { id: 2, nombre: "Destornillador", precio: 5.99, imagen: "url_imagen" },
-    { id: 3, nombre: "Sierra", precio: 15.99, imagen: "url_imagen" },
-    { id: 4, nombre: "Taladro eléctrico", precio: 39.99, imagen: "url_imagen" },
-    { id: 5, nombre: "Cinta métrica", precio: 3.99, imagen: "url_imagen" },
-    { id: 6, nombre: "Llave ajustable", precio: 7.99, imagen: "url_imagen" },
-    { id: 7, nombre: "Alicates", precio: 6.99, imagen: "url_imagen" },
-    { id: 8, nombre: "Clavos de acero", precio: 1.99, imagen: "url_imagen" },
-    {
-        id: 9,
-        nombre: "Tornillos de alta resistencia",
-        precio: 2.99,
-        imagen: "url_imagen",
-    },
-    { id: 10, nombre: "Cepillo para madera", precio: 8.99, imagen: "url_imagen" },
-    {
-        id: 11,
-        nombre: "Pintura para interiores",
-        precio: 12.99,
-        imagen: "url_imagen",
-    },
-    { id: 12, nombre: "Brocas para metal", precio: 4.99, imagen: "url_imagen" },
-    { id: 13, nombre: "Lija de grano fino", precio: 2.49, imagen: "url_imagen" },
-    { id: 14, nombre: "Barniz para madera", precio: 9.99, imagen: "url_imagen" },
-    { id: 15, nombre: "Pegamento multiusos", precio: 3.49, imagen: "url_imagen" },
-    {
-        id: 16,
-        nombre: "Cerradura de seguridad",
-        precio: 19.99,
-        imagen: "url_imagen",
-    },
-    { id: 17, nombre: "Bombillo LED", precio: 1.99, imagen: "url_imagen" },
-    { id: 18, nombre: "Escalera plegable", precio: 29.99, imagen: "url_imagen" },
-    { id: 19, nombre: "Tubo de PVC", precio: 2.99, imagen: "url_imagen" },
-    { id: 20, nombre: "Cable eléctrico", precio: 0.99, imagen: "url_imagen" },
-];
-
-//Principal function of Inventory
 function Inventory() {
-    /*Modal*/
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+  // Estados
+  const [productos, setProductos] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSede, setSelectedSede] = useState([]);
+  const [sedeOptions, setSedeOptions] = useState([]);
 
-    const openModal = () => {
-        setModalIsOpen(true);
+  // Efecto para obtener las sedes
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const sedesData = await getSedes();
+        setSedeOptions(sedesData);
+      } catch (error) {
+        console.error("Error fetching sedes:", error);
+      }
     };
+    fetchData();
+  }, []);
 
-    const closeModal = () => {
-        setModalIsOpen(false);
+  // Efecto para obtener los productos al cargar
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const productosData = await getProducts();
+        setProductos(productosData);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
     };
-    /* Design */
-    return (
-        <div>
-            <Navbar />
-            <div className="inventory-container">
-                <div className="container-productos2">
-                    <input type="text" placeholder="Buscar productos..." />
-                    <div className="productos-grid2">
-                        {productos.map((producto) => (
-                            <div key={producto.id} className="producto-card2">
-                                <img src={producto.imagen} alt={producto.nombre} />
-                                <h3>{producto.nombre}</h3>
-                                <p>${producto.precio.toFixed(2)}</p>
-                            </div>
-                        ))}
-                    </div>
+    fetchData();
+  }, []);
+
+  // Efecto para obtener los productos de la sede seleccionada
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedSede) {
+        try {
+          const productosData = await getProductsSede(selectedSede.id);
+          setProductos(productosData);
+
+          console.log(productosData)
+        } catch (error) {
+          console.error("Error fetching products for sede:", error);
+        }
+      }
+    };
+    fetchData();
+  }, [selectedSede]);
+
+
+  // Handlers
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSedeChange = (e) => {
+    setSelectedSede(e.value);
+    console.log(e.value);
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <div className="inventory-container">
+        <div className="container-productos2">
+          <div className="search-container-inventory">
+            <Dropdown
+              value={selectedSede}
+              onChange={handleSedeChange}
+              options={sedeOptions}
+              optionLabel="username"
+              placeholder="Selecciona una sede"
+              className="select-inventory"
+              highlightOnSelect={false}
+              panelClassName="dropdown-panel"
+              itemTemplate={(option) => (
+                <div className={option.id === selectedSede?.id ? "selected-option" : ""}>
+                  {option.username}
                 </div>
-                <div className="container-venta2">
-                    <button className="agregar-producto2" onClick={openModal}>
-                        <span>+</span> Agregar producto
-                    </button>
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={closeModal}
-                        contentLabel="Agregar Producto Modal"
-                        style={{
-                            content: {
-                                width: "auto",
-                                height: "auto",
-                                maxWidth: "75%",
-                                maxHeight: "75%",
-                                margin: "auto",
-                            },
-                        }}
-                    >
-                        <AddProducts />
-                        <div className="container-buttonModal2">
-                            <button onClick={closeModal} className="close_modal">
-                                x
-                            </button>
-                        </div>
-                    </Modal>
-                </div>
-            </div>
+              )}
+            />
+            <SearchIcon className="search-icon-inventory" />
+            <input
+              type="text"
+              placeholder="Buscar productos..."
+              className="search-products-inventory"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+            />
+          </div>
+          {productos.length === 0 ? (
+            <p>No hay productos disponibles</p>
+          ) : (
+            <ProductList productos={productos} searchTerm={searchTerm} showAddButton={false} />
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Inventory;

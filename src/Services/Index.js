@@ -6,6 +6,8 @@ const endpoints = {
     getProducts: `${URL}/inventory/products/`,
     getProductDetails: (productId) => `${URL}/inventory/products/${productId}/`,
     updateProduct: (productId) => `${URL}/inventory/products/${productId}/`,
+    getSedes: `${URL}/inventory/users/`,
+    getProductsSede: (sedeId) => `${URL}/inventory/products/users/?user=${sedeId}`
   },
 };
 

@@ -62,4 +62,32 @@ const updateProduct = async (body, productId) => {
   return response.data;
 };
 
-export { addProducts, getProducts, getProductDetails, updateProduct };
+const getSedes = async () => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+
+  const response = await axios.get(endpoints.products.getSedes, config);
+
+  return response.data;
+};
+
+
+const getProductsSede = async (sedeId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+ 
+  const response = await axios.get(endpoints.products.getProductsSede(sedeId), config);
+
+  return response.data;
+};
+
+
+export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede };

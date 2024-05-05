@@ -88,6 +88,7 @@ function Home() {
             productos={productos}
             agregarProductoSeleccionado={agregarProductoSeleccionado}
             searchTerm={searchTerm}
+            showAddButton={true}
           />
         </div>
         <div className="container-venta">
