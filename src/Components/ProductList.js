@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import defaultProductImage from "../Resources/herramientas.jpg";
 import UpdateProduct from "./UpdateProduct";
 
-function ProductList({ productos, agregarProductoSeleccionado, searchTerm }) {
+function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showAddButton }) {
   const [modalShow, setModalShow] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [seleccionarProducto, setSeleccionarProducto] = useState(null);
@@ -62,12 +62,14 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm }) {
           <h3 style={{ textAlign: "center" }}>{producto.name}</h3>
           <p>${producto.price}</p>
           <p>Disponible: {producto.stock}</p>
-          <button
-            className="agregar-button"
-            onClick={() => agregarProductoSeleccionado(producto)}
-          >
-            Agregar
-          </button>
+          {showAddButton && (
+            <button
+              className="agregar-button"
+              onClick={() => agregarProductoSeleccionado(producto)}
+            >
+              Agregar
+            </button>
+          )}
           <button
             className="detalles-button"
             onClick={() => openModal(producto.id)}

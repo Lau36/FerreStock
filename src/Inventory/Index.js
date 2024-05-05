@@ -73,7 +73,10 @@ function Inventory() {
               onChange={handleSearchTermChange}
             />
           </div>
-          <ProductList productos={productos} searchTerm={searchTerm} />
+          <ProductList 
+            productos={productos} 
+            searchTerm={searchTerm}
+            showAddButton={false} />
         </div>
       </div>
     </div>
