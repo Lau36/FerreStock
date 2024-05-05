@@ -1,8 +1,9 @@
 import AppRouter from "./AppRouter";
+import Inventario from "./Inventory/Index.js";
 import "./App.css";
 
 function App() {
-  return <AppRouter />;
+  return <Inventario />;
 }
 
 export default App;
