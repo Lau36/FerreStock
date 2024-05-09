@@ -63,6 +63,7 @@
 }
 
 .card {
+  display: block;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -81,9 +82,18 @@
 }
 
 .cerrar-venta {
-  display: block;
   margin: 20px auto;
-  background-color: #ff0000;
+  background-color: #067206c3;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.venta-pendiente {
+  margin: 20px auto;
+  background-color: #ff0000b3;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -92,8 +102,32 @@
 }
 
 .cerrar-venta:hover {
+  background-color: #4bcc00;
+}
+.venta-pendiente:hover {
   background-color: #cc0000;
 }
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cerrar-venta,
+.venta-pendiente {
+  padding: 5px 8px; 
+  font-size: 14px; 
+  width: auto; 
+}
+
+@media screen and (min-width: 768px) {
+  .cerrar-venta,
+  .venta-pendiente {
+    font-size: 16px; /* Ajusta el tamaño de fuente de los botones en pantallas grandes */
+  }
+}
+
 
 
 @media screen and (min-width: 768px) {
@@ -159,4 +193,13 @@
   padding-left: 30px;
   border: none;
   border-radius: 10px;
+}
+
+.table-container {
+  max-height: 200px; 
+  overflow-y: auto; 
+}
+
+.total-a-pagar{
+  margin-top: 10px;
 }

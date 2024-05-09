@@ -63,21 +63,6 @@
 }
 
 
-.cerrar-venta {
-    display: block;
-    margin: 20px auto;
-    background-color: #ff0000;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.cerrar-venta:hover {
-    background-color: #cc0000;
-}
-
 @media screen and (min-width: 768px) {
     .inventory-container {
         grid-template-columns: 3fr 1fr;
