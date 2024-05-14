@@ -40,6 +40,22 @@ export const createsede = (
   });
 };
 
+export const createsupplier = (
+  company_name,
+  contact_name,
+  address,
+  tel,
+  email
+) => {
+  return api.post("inventory/supplier/register/", {
+    company_name,
+    contact_name,
+    address,
+    tel,
+    email
+  });
+};
+
 export const login = (username, password) => {
   return api.post("inventory/api/token/", { username, password });
 };

@@ -4,6 +4,8 @@ import logo from "../Resources/logoNavbar.png";
 import { logout } from "../api/api";
 import { createBrowserHistory } from "history";
 
+
+
 //Navbar
 function Navbar() {
   const tokenAccess = localStorage.getItem("token");
@@ -43,7 +45,7 @@ function Navbar() {
               Inventario
             </a>
             <span style={{ marginRight: "30px" }}></span>
-            <a href="/" className="navbar-home">
+            <a href="/Proveedores" className="navbar-home">
               Proveedores
             </a>
             <span style={{ marginRight: "30px" }}></span>

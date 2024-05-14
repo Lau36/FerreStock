@@ -4,6 +4,7 @@ import Register from "./Register/register.js";
 import Login from "./Login/Login.jsx";
 import Home from "./Home/Index";
 import Inventory from "./Inventory/Index.js";
+import Suppliers from "./Suppliers/Suppliers.jsx"
 
 function AppRouter() {
   const isLoggedIn = window.localStorage.getItem('token'); // Modificado para usar el token
@@ -15,6 +16,7 @@ function AppRouter() {
         <Route path="/Registro" element={<Register />} />
         <Route path="/Home" element={<Home />} />
         <Route path="/Inventario" element={<Inventory />} />
+        <Route path="/Proveedores" element={<Suppliers/>} />
       </Routes>
     </Router>
   );
