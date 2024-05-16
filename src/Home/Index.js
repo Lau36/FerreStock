@@ -25,6 +25,8 @@ function Home() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [totalAPagar, setTotalAPagar] = useState(0);
 
+  const [cantidadPendiente, setCantidadPendiente] = useState(0);
+
   useEffect(() => {
     const fetchData = async () => {
       const productosData = await getProducts();
@@ -78,6 +80,11 @@ function Home() {
       precioTotal: (value || 0) * productosSeleccionados[index].price,
     };
     setProductosSeleccionados(nuevosProductos);
+
+    
+    if (productosSeleccionados[index].pendiente) {
+      setCantidadPendiente(value);
+    }
   };
 
   const cerrarVenta = () => {
@@ -125,6 +132,7 @@ function Home() {
                       <TableCell align="center">Nombre</TableCell>
                       <TableCell align="center">Cantidad</TableCell>
                       <TableCell align="center">Precio Total</TableCell>
+                      <TableCell align="center">Pendiente</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -143,6 +151,33 @@ function Home() {
                         <TableCell align="right">
                           ${typeof producto.precioTotal === 'number' ? producto.precioTotal.toFixed(2) : ''}
                         </TableCell>
+                        <TableCell align="center" className="checkbox-container">
+                          <label className={`checkbox-custom-label ${producto.pendiente ? 'checked' : 'unchecked'}`} htmlFor={`checkbox-${index}`}>
+                            <input
+                              type="checkbox"
+                              id={`checkbox-${index}`}
+                              checked={producto.pendiente}
+                              onChange={(e) => {
+                                const nuevosProductos = [...productosSeleccionados];
+                                nuevosProductos[index] = {
+                                  ...productosSeleccionados[index],
+                                  pendiente: e.target.checked,
+                                };
+                                setProductosSeleccionados(nuevosProductos);
+
+                                // Si está seleccionado como pendiente, establecer la cantidad pendiente
+                                if (e.target.checked) {
+                                  setCantidadPendiente(productosSeleccionados[index].cantidad);
+                                } else {
+                                  setCantidadPendiente(0);
+                                }
+                              }}
+                              style={{ display: 'none' }} // Ocultar el checkbox predeterminado
+                            />
+                            <span className="checkbox-custom" />
+                          </label>
+                        </TableCell>
+
                       </TableRow>
                     ))}
                   </TableBody>
@@ -157,10 +192,7 @@ function Home() {
 
             <div className="buttons-container">
               <button className="cerrar-venta" onClick={cerrarVenta}>
-                Cerrar venta
-              </button>
-              <button className="venta-pendiente" onClick={cerrarVenta}>
-                Venta pendiente
+                Actualizar inventario
               </button>
             </div>
             <button className="agregar-producto" onClick={openModal}>

@@ -203,3 +203,39 @@
 .total-a-pagar{
   margin-top: 10px;
 }
+
+.checkbox-custom-label {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-custom-label input {
+  display: none; 
+}
+
+.checkbox-custom {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  background-color: green; 
+  position: relative;
+}
+
+.checkbox-custom-label.checked .checkbox-custom {
+  background-color: red; 
+}
+
+.checkbox-custom-label.checked .checkbox-custom::after {
+  content: '';
+  background-image: url('../Resources/check-mark.svg');
+  background-size: contain;
+  width: 16px; 
+  height: 16px;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
