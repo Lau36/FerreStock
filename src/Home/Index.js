@@ -123,7 +123,7 @@ function Home() {
         </div>
         <div className="container-venta">
           <div className="card">
-            <h2 className="card-title">Venta actual</h2>
+            <h2 className="card-title">Productos seleccionados</h2>
             <div className="table-container">
               <TableContainer component={Paper}>
                 <Table>

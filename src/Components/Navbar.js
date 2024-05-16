@@ -49,6 +49,10 @@ function Navbar() {
               Proveedores
             </a>
             <span style={{ marginRight: "30px" }}></span>
+            <a href="/Pedidos" className="navbar-home">
+              Pedidos
+            </a>
+            <span style={{ marginRight: "30px" }}></span>
             <a className="navbar-home" onClick={handleLogout}>
               Cerrar sesión
             </a>
