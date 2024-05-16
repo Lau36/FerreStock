@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import logo from "../Resources/logoNavbar.png";
 import Navbar from "../Components/Navbar";
 import { createsupplier } from "../api/api";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
@@ -78,7 +77,7 @@ function Suppliers() {
         </div>
       ) : (
         <div className="form-suppliers" >
-          <section className="py-3 h-100">
+          <div className="py-3 h-100">
             <div className="py-5 h-100">
               <div className="row justify-content-center align-items-center h-100">
                 <div className="col-7 col-lg-7 col-xl-7">
@@ -87,12 +86,12 @@ function Suppliers() {
                     style={{ borderRadius: "15px" }}
                   >
                     <div className="card-body p-4 p-md-5">
-                      <h3 className="mb-4 pb-2 pb-md-0 mb-md-5">
+                      <h2 className="mb-4 pb-2 pb-md-0 mb-md-5">
                         Registro de proveedores
-                      </h3>
+                      </h2>
                       <form>
                         <div className="row">
-                          <div className="col-md-6 mb-4">
+                          <div className="col-md-6 mb-4 ">
                             <div className="form-outline">
                               <input
                                 type="text"
@@ -124,7 +123,7 @@ function Suppliers() {
 
                         <div className="row">
                           <div className="col-12 mb-4 d-flex align-items-center">
-                            <div className="form-outline datepicker w-100">
+                            <div className="form-outline-address w-100">
                               <input
                                 type="text"
                                 className="form-control form-control-lg"
@@ -190,7 +189,7 @@ function Suppliers() {
                 </div>
               </div>
             </div>
-          </section>
+          </div>
         </div>
       )}
     </div>

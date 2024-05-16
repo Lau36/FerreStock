@@ -27,11 +27,11 @@ function Navbar() {
 
   return (
     <nav
-      className="navbar navbar-expand-lg"
+      className="navbar "
       style={{ backgroundColor: "#F2F2F2", width: "100%" }}
     >
-      <div className="container-fluid d-flex justify-content-between align-items-center">
-        <ul className="navbarListado d-flex">
+      <div>
+        <ul className="navbarListado ">
           <a href="/">
             <img src={logo} alt="Logo" className="imageNav" />
           </a>
