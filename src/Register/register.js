@@ -92,7 +92,7 @@ function Register() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control-register"
                         id="sede"
                         placeholder="Nombre de la sede"
                         value={username}
@@ -105,7 +105,7 @@ function Register() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control-register"
                         id="encargado"
                         placeholder="Nombre del encargado"
                         value={manager}
@@ -118,7 +118,7 @@ function Register() {
                       </label>
                       <input
                         type="email"
-                        className="form-control"
+                        className="form-control-register"
                         id="correo"
                         placeholder="Correo electronico"
                         value={email}
@@ -135,7 +135,7 @@ function Register() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control-register"
                         id="celular"
                         placeholder="Numero de celular"
                         value={contact}
@@ -148,7 +148,7 @@ function Register() {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="form-control-register"
                         id="direccion"
                         placeholder="Direccion"
                         value={address}
@@ -162,7 +162,7 @@ function Register() {
                       <div className="input-with-icon">
                         <input
                           type={mostrarContrasena ? "text" : "password"}
-                          className="form-control"
+                          className="form-control-register"
                           id="contrasena"
                           placeholder="Contraseña"
                           value={password}

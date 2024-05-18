@@ -67,12 +67,12 @@ h2 {
     font-size: large;
 }
 
-.form-control {
-    width: 85%;
+.form-control-register {
+    width: 100%;
     /* El 50% del ancho menos el espacio entre ellos */
     padding: 8px;
     border: 1px solid #ccc;
-    background-color: #d9d9d9a8;
+    background-color: #e6e6e6a8;
     border-radius: 10px;
 }
 

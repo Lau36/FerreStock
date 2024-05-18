@@ -1,0 +1,26 @@
+.orders-container {
+    width: 90%;
+    height: 80vh;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 20px;
+    /* Espaciado interno del contenedor */
+    box-sizing: border-box;
+    /* Incluye el padding en el cálculo del ancho */
+    overflow-y: auto;
+    /* Scroll vertical si el contenido es mayor que el alto del contenedor */
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    /* Centra el contenido horizontalmente */
+    margin-bottom: 20px;
+    /* Añade un margen inferior para separar del contenido siguiente */
+}
+
+.filter-input {
+    width: 95%;
+}
