@@ -89,5 +89,39 @@ const getProductsSede = async (sedeId) => {
   return response.data;
 };
 
+const getOrders = async () => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
 
-export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede };
+  const response = await axios.get(endpoints.products.getOrders, config);
+
+  return response.data;
+};
+
+
+const updateStatusOrder = async (orderId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const body = {
+    order_id: orderId
+  };
+
+  const response = await axios.post(
+    endpoints.products.updateStatusOrders,
+    body,
+    config
+  );
+  return response;
+};
+
+
+
+export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder };
