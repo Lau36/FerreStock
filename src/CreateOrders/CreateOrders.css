@@ -1,0 +1,97 @@
+.conainter-principal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60vh;
+}
+
+.create-order-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFF;
+    border-radius: 10px;
+    flex-direction: column;
+    padding: 1vw; 
+    width: 70vw; 
+    height: 80vh; 
+    margin: 0 auto;
+    margin-top: 3%;
+}
+
+.title-container-orders{
+    margin-top: 0.5vh;
+    color: black;
+    margin-bottom: 1.5vh;
+}
+
+.create-order-title{
+    font-size: 1.5vw;
+    font-weight: bolder;
+}
+
+.line-orders{
+    background-color: #30348C;
+    height: 1px;
+    margin: 1px;
+    margin-bottom: 15px;
+}
+
+.line-orders, .footer-line{
+    width: 100%;
+    margin: 1px;
+    margin-bottom: 15px;
+}
+
+.form-suppliers{
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    background-color: #FFFF;
+}
+
+.label-supplier{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.button-add-product-orders{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-self: flex-start;
+}
+
+.add-product-supplier, .add-order{
+    border: none;
+    border-radius: 5px;
+    background-color: #30348C;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 10%;    
+    filter: drop-shadow(3px 5px 5px rgba(0, 0, 0, 0.3));
+}
+
+.products-container{
+    margin-top: 10px;
+    overflow: auto;
+}
+
+.button-add-orders-container{
+    margin-top: -10px;
+    width: 30%;
+    height: 700px;
+    margin-bottom: -80vh;
+}
+
+.add-order{
+    width: 100%;
+}
+
+.footer-line{
+    margin-top: 40px;
+}
