@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Orders.css";
 import Navbar from "../Components/Navbar";
 import PropTypes from 'prop-types';
@@ -20,28 +20,58 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import AddIcon from '@mui/icons-material/Add';
-
-// Función para crear datos de la tabla
-function createData(proveedor, fecha, estado, productos) {
-    return {
-        proveedor,
-        fecha,
-        estado,
-        productos,
-    };
-}
+import Swal from 'sweetalert2'; // Importar SweetAlert
+import { getOrders, updateStatusOrder } from "../Services/Products";
 
 // Componente que representa una fila de la tabla
-function Row(props) {
-    const { row } = props; // Desestructuramos las props para obtener la fila
+function Row({ row }) {
     const [open, setOpen] = useState(false); // Estado para controlar si la fila colapsable está abierta
+    const [status, setStatus] = useState(row.status); // Estado para almacenar el estado actual
+
+    // Manejador de cambio para el select de estado
+    const handleStatusChange = async (event) => {
+        const newStatus = event.target.value;
+        try {
+            // Realizar la solicitud de actualización del estado del pedido
+            const response = await updateStatusOrder(row.id_order);
+
+            console.log(response.status);
+
+            if (response.status === 200) {
+                // Mostrar SweetAlert de éxito si la respuesta es "OK"
+                setStatus(newStatus);
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Éxito!',
+                    text: 'El estado del pedido se actualizó correctamente.'
+                });
+            } else {
+                // Mostrar SweetAlert de error si la respuesta no es "OK"
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al actualizar el estado del pedido. Por favor, inténtalo de nuevo.'
+                });
+            }
+        } catch (error) {
+
+            console.log("Holaaaaa", error);
+            // Mostrar SweetAlert de error si hay un error en la solicitud
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al comunicarse con el servidor. Por favor, inténtalo de nuevo más tarde.'
+            });
+        }
+    };
+
 
     return (
         <React.Fragment>
             {/* Fila principal */}
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
                 {/* Celda con botón para expandir/colapsar */}
-                <TableCell>
+                <TableCell className="more-info-option">
                     <IconButton
                         aria-label="expand row"
                         size="small"
@@ -50,12 +80,27 @@ function Row(props) {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                {/* Celdas con los datos de la fila */}
-                <TableCell component="th" scope="row">
-                    {row.proveedor}
+                {/* Celda con el nombre del proveedor */}
+                <TableCell component="th" scope="row" align="center">
+                    {row.supplier.company_name}
                 </TableCell>
-                <TableCell align="center">{row.fecha}</TableCell>
-                <TableCell align="center">{row.estado}</TableCell>
+                {/* Celda con la fecha */}
+                <TableCell align="center">{row.date.split('T')[0]}</TableCell>
+                {/* Celda de estado */}
+                <TableCell align="center">
+                    {status === 'Entregado' ? (
+                        <div className="status-delivered">{status}</div>
+                    ) : (
+                        <select
+                            value={status}
+                            onChange={handleStatusChange}
+                            className="select-pending" // Aplicamos la clase para el fondo naranja
+                        >
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Entregado">Entregado</option>
+                        </select>
+                    )}
+                </TableCell>
             </TableRow>
             {/* Fila colapsable con los productos */}
             <TableRow>
@@ -68,17 +113,17 @@ function Row(props) {
                             <Table size="small" aria-label="productos">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Nombre</TableCell>
-                                        <TableCell align="right">Cantidad</TableCell>
+                                        <TableCell className="headercell">Nombre</TableCell>
+                                        <TableCell className="headercell" align="right">Cantidad</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.productos.map((producto) => (
-                                        <TableRow key={producto.nombre}>
+                                    {row.items.map((item, index) => (
+                                        <TableRow key={index}>
                                             <TableCell component="th" scope="row">
-                                                {producto.nombre}
+                                                {item.product.name}
                                             </TableCell>
-                                            <TableCell align="right">{producto.cantidad}</TableCell>
+                                            <TableCell align="right">{item.quantity}</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -91,70 +136,44 @@ function Row(props) {
     );
 }
 
+
 // Definimos los tipos de las props para el componente Row
 Row.propTypes = {
     row: PropTypes.shape({
-        proveedor: PropTypes.string.isRequired,
-        fecha: PropTypes.string.isRequired,
-        estado: PropTypes.string.isRequired,
-        productos: PropTypes.arrayOf(
+        id_order: PropTypes.number.isRequired,
+        supplier: PropTypes.shape({
+            company_name: PropTypes.string.isRequired,
+        }),
+        date: PropTypes.string.isRequired,
+        status: PropTypes.string.isRequired,
+        items: PropTypes.arrayOf(
             PropTypes.shape({
-                nombre: PropTypes.string.isRequired,
-                cantidad: PropTypes.number.isRequired,
+                product: PropTypes.shape({
+                    name: PropTypes.string.isRequired,
+                }),
+                quantity: PropTypes.number.isRequired,
             }),
         ).isRequired,
     }).isRequired,
 };
 
-// Datos iniciales para las filas de la tabla
-const initialRows = [
-    createData('Proveedor A', '2024-05-01', 'Pendiente', [
-        { nombre: 'Producto 1', cantidad: 10 },
-        { nombre: 'Producto 2', cantidad: 20 },
-    ]),
-    createData('Proveedor B', '2024-05-02', 'Completado', [
-        { nombre: 'Producto 3', cantidad: 15 },
-        { nombre: 'Producto 4', cantidad: 30 },
-    ]),
-    createData('Proveedor C', '2024-05-03', 'En Progreso', [
-        { nombre: 'Producto 5', cantidad: 8 },
-        { nombre: 'Producto 6', cantidad: 12 },
-    ]),
-    // Agrega más datos para probar el scroll
-    createData('Proveedor D', '2024-05-04', 'Pendiente', [
-        { nombre: 'Producto 7', cantidad: 20 },
-        { nombre: 'Producto 8', cantidad: 25 },
-    ]),
-    createData('Proveedor E', '2024-05-05', 'Completado', [
-        { nombre: 'Producto 9', cantidad: 30 },
-        { nombre: 'Producto 10', cantidad: 35 },
-    ]),
-    createData('Proveedor A', '2024-05-01', 'Pendiente', [
-        { nombre: 'Producto 1', cantidad: 10 },
-        { nombre: 'Producto 2', cantidad: 20 },
-    ]),
-    createData('Proveedor B', '2024-05-02', 'Completado', [
-        { nombre: 'Producto 3', cantidad: 15 },
-        { nombre: 'Producto 4', cantidad: 30 },
-    ]),
-    createData('Proveedor C', '2024-05-03', 'En Progreso', [
-        { nombre: 'Producto 5', cantidad: 8 },
-        { nombre: 'Producto 6', cantidad: 12 },
-    ]),
-    // Agrega más datos para probar el scroll
-    createData('Proveedor D', '2024-05-04', 'Pendiente', [
-        { nombre: 'Producto 7', cantidad: 20 },
-        { nombre: 'Producto 8', cantidad: 25 },
-    ]),
-    createData('Proveedor E', '2024-05-05', 'Completado', [
-        { nombre: 'Producto 9', cantidad: 30 },
-        { nombre: 'Producto 10', cantidad: 35 },
-    ]),
-];
-
 // Componente principal que contiene la tabla completa
 function CollapsibleTable() {
+    const [orders, setOrders] = useState([]); // Estado para almacenar los pedidos
     const [filter, setFilter] = useState(''); // Estado para almacenar el valor del filtro
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const ordersData = await getOrders();
+                setOrders(ordersData);
+            } catch (error) {
+                console.error("Error fetching orders:", error);
+            }
+        };
+
+        fetchOrders();
+    }, []);
 
     // Manejador de cambio para el campo de filtro
     const handleFilterChange = (event) => {
@@ -162,8 +181,8 @@ function CollapsibleTable() {
     };
 
     // Filtramos las filas según el valor del filtro
-    const filteredRows = initialRows.filter((row) =>
-        row.proveedor.toLowerCase().includes(filter.toLowerCase())
+    const filteredOrders = orders.filter((order) =>
+        order.supplier.company_name.toLowerCase().includes(filter.toLowerCase())
     );
 
     return (
@@ -183,14 +202,14 @@ function CollapsibleTable() {
                 <TableHead>
                     <TableRow>
                         <TableCell className="headercell" />
-                        <TableCell className="headercell">Proveedor</TableCell>
+                        <TableCell className="headercell" align="center">Proveedor</TableCell>
                         <TableCell className="headercell" align="center">Fecha</TableCell>
                         <TableCell className="headercell" align="center">Estado</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {filteredRows.map((row) => (
-                        <Row key={row.proveedor} row={row} />
+                    {filteredOrders.map((order) => (
+                        <Row key={order.id} row={order} />
                     ))}
                 </TableBody>
             </Table>
@@ -229,4 +248,3 @@ function Orders() {
 }
 
 export default Orders;
-

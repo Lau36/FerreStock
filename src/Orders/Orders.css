@@ -13,6 +13,10 @@
     border-radius: 20px;
 }
 
+.headercell {    
+    font-weight: bold; /* Texto en negrita */
+}
+
 .filter-container {
     display: flex;
     justify-content: center;
@@ -24,3 +28,29 @@
 .filter-input {
     width: 95%;
 }
+
+.more-info-option {
+   padding-left: 1%;
+   width: 5%;
+
+}
+
+.status-delivered {
+    width: 25%;
+    background-color: #4caf50; /* Color de fondo verde */
+    color: #fff; /* Color de texto blanco */
+    padding: 8px 16px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    display: inline-block; /* Para que el contenedor se ajuste al contenido */
+}
+
+.select-pending {
+    width: 30%;
+    background-color: #ff9800; /* Color de fondo naranja */
+    color: #fff; /* Color de texto blanco */
+    padding: 8px 16px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    border: none; /* Sin borde */
+    outline: none; /* Sin contorno */
+}
+
