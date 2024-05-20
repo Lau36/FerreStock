@@ -40,6 +40,10 @@ function CreateOrders() {
     p: 4,
   };
 
+  const style2 = {
+    width: "100%",
+  };
+
   const handleDelete = (name) => {
     const filteredRows = rows.filter((row) => row.name !== name);
     setRows(filteredRows);
@@ -289,7 +293,7 @@ function CreateOrders() {
                 disablePortal
                 id="combo-box-demo"
                 options={products}
-                sx={{ width: "20vw", height: "6vh" }}
+                sx={style2}
                 value={selectedProduct}
                 onChange={(event, newValue) => {
                   setSelectedProduct(newValue);
@@ -303,13 +307,15 @@ function CreateOrders() {
                 )}
               />
               <label className="label-product">Cantidad</label>
-              <input
-                type="text"
-                className="input-product-amount"
-                placeholder="Cantidad del producto"
-                onChange={(e) => setQuantity(e.target.value)}
-                required
-              />
+              <div className="input-amount-container">
+                <input
+                  type="number"
+                  className="input-product-amount"
+                  placeholder="Cantidad del producto"
+                  onChange={(e) => setQuantity(e.target.value)}
+                  required
+                />
+              </div>
               <div className="button-add-product-modal">
                 <button
                   type="submit"

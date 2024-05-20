@@ -235,3 +235,8 @@
     border-radius: 5px;
      /*El padding de los modales*/
 }
+
+.button-delete-product-container{
+    padding-left: 160px;
+    margin-top: -20px;
+}

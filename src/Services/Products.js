@@ -62,6 +62,20 @@ const updateProduct = async (body, productId) => {
   return response.data;
 };
 
+const deleteProduct = async (productId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const response = await axios.delete(
+    endpoints.products.deleteProduct(productId),
+    config
+  );
+  return response.data;
+};
+
 const getSedes = async () => {
   const tokenAccess = localStorage.getItem("token");
   const config = {
@@ -148,4 +162,5 @@ export {
   getOrders,
   updateStatusOrder,
   createOrder,
+  deleteProduct,
 };
