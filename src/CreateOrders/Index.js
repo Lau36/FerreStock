@@ -112,6 +112,7 @@ function CreateOrders() {
       const updatedProducts = [...items, newItem];
       setRows(updatedRows);
       setItems(updatedProducts);
+      setOpen(false);
 
       console.log(updatedRows);
 
