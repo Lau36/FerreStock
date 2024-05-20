@@ -1,0 +1,48 @@
+.conteiner-product-status {
+    display: flex;
+    height: 80vh; 
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.conteiner-table-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; 
+    margin-left: 50px;
+}
+
+.table-wrapper {
+    width: 100%; 
+}
+
+.conteiner-information-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; 
+    margin-left: 10px; 
+}
+
+.card-information {
+    width: 70%; 
+    padding: 20px;
+}
+
+.switch-pending .MuiSwitch-track {
+    background-color: red !important;
+}
+
+.switch-pending .MuiSwitch-thumb {
+    color: red !important;
+}
+
+.switch-available .MuiSwitch-track {
+    background-color: green !important;
+}
+
+.switch-available .MuiSwitch-thumb {
+    color: green !important;
+}

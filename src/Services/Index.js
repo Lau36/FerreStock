@@ -9,7 +9,8 @@ const endpoints = {
     getSedes: `${URL}/inventory/users/`,
     getProductsSede: (sedeId) => `${URL}/inventory/products/users/?user=${sedeId}`,
     getOrders: `${URL}/inventory/orders/`,
-    updateStatusOrders: `${URL}/inventory/order/update-order-status/`
+    updateStatusOrders: `${URL}/inventory/order/update-order-status/`,
+    updateStock: `${URL}/inventory/products/pending/`,
   },
 };
 

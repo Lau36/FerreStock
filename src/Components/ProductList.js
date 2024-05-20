@@ -48,7 +48,7 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
       className="productos-grid"
       style={{ overflowY: "auto", borderRadius: "10px" }}
     >
-      {filteredProducts.map((producto) => (
+      {filteredProducts.map((producto, index) => (
         <div key={producto.id} className="producto-card">
           <img
             src={producto.image || defaultProductImage}
@@ -56,7 +56,6 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
             style={{
               height: "auto",
               borderRadius: "10px",
-              // border: "1px solid",
             }}
           />
           <h3 style={{ textAlign: "center" }}>{producto.name}</h3>
@@ -125,7 +124,7 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
               }}
             >
               <p>Precio: ${seleccionarProducto?.price}</p>
-              <p>Stock: {seleccionarProducto?.stock}</p>
+              <p>Stock: {seleccionarProducto?.stock + seleccionarProducto?.pending_stock }</p>
               <p>Pendiente en stock: {seleccionarProducto?.pending_stock}</p>
             </div>
             <div

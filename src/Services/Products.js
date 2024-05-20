@@ -122,6 +122,37 @@ const updateStatusOrder = async (orderId) => {
   return response;
 };
 
+const updateProductStock = async (productId, isPending, quantity) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
 
+  let body;
+  if (isPending) {
+    body = {
+      product_id: productId,
+      quantity: quantity, 
+      pending: true, 
+    };
+  } else {
+    body = {
+      product_id: productId,
+      quantity: -quantity, 
+      pending: false, 
+    };
+  }
 
-export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder };
+  try {
+    console.log("Sending request with body:", body);
+    const response = await axios.post(endpoints.products.updateStock, body, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product stock:", error.response.data);
+    throw error;
+  }
+};
+
+export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder,updateProductStock };
