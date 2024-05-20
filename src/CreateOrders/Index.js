@@ -10,74 +10,207 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Dialog } from "primereact/dialog";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
+import Typography from "@mui/material/Typography";
+import Swal from "sweetalert2";
+import { useState, useEffect } from "react";
+import { getSuppliers } from "../Services/Suppliers";
+import { createOrder, getProducts } from "../Services/Products";
+import { useNavigate } from "react-router";
 import "./CreateOrders.css";
-import { useState } from "react";
 
-function createData(name, cuality) {
-  return { name, cuality };
+//Products--------------------------------------------------
+function createProduct(name, quantity, id) {
+  return { name, quantity, id };
 }
 
-const initialRows = [
-  createData("Bolsa de cemento", 159),
-  createData("Cinta", 237),
-  createData("Tornillos", 262),
-  createData("Martillos", 305),
-  createData("Puntillas", 356),
-];
+//////******************************************************* */
 
 function CreateOrders() {
-  const suppliers = [
-    { label: "Proovedor 1" },
-    { label: "Proovedor 2" },
-    { label: "Proovedor 3" },
-    { label: "Proovedor 4" },
-  ];
-  const [rows, setRows] = useState(initialRows);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+  };
 
   const handleDelete = (name) => {
     const filteredRows = rows.filter((row) => row.name !== name);
     setRows(filteredRows);
   };
+  const [open, setOpen] = useState(false);
+  const handleOpen = (e) => {
+    e.preventDefault();
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [quantity, setQuantity] = useState("");
+  const [rows, setRows] = useState([]); //La lista de productos
+  const [supplierData, setSupplierData] = useState([]);
+  const [productData, setProductData] = useState([]);
+  const [supplierId, setSupplierId] = useState("");
+  const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
-  const openModal = () => {
-    setModalIsOpen(true);
+  //Este me trae los proovedores
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getSuppliers();
+        const transformedData = response.map((supplier) => ({
+          label: supplier.company_name,
+          id: supplier.id,
+        }));
+        setSupplierData(transformedData);
+      } catch (error) {
+        console.error("Error fetching suppliers:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  //Este me trae los productos
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getProducts();
+        const transformedData = response.map((product) => ({
+          label: product.name,
+          id: product.id,
+        }));
+        setProductData(transformedData);
+      } catch (error) {
+        console.error("Error fetching suppliers:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const suppliers = supplierData;
+
+  const products = productData;
+
+  const handleAddProduct = () => {
+    if (selectedProduct && quantity) {
+      const newProduct = createProduct(
+        selectedProduct.label,
+        parseInt(quantity),
+        selectedProduct.id
+      );
+      const newItem = {
+        product: selectedProduct.id,
+        quantity: parseInt(quantity),
+      };
+      const updatedRows = [...rows, newProduct];
+      const updatedProducts = [...items, newItem];
+      setRows(updatedRows);
+      setItems(updatedProducts);
+
+      console.log(updatedRows);
+
+      setSelectedProduct(null);
+      setQuantity("");
+    }
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+
+    const numericSupplierId = parseInt(supplierId);
+    const numericId = parseInt(sessionStorage.getItem("id"));
+    if (
+      isNaN(numericSupplierId) ||
+      numericSupplierId === 0 ||
+      items.length === 0
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Algo salió mal",
+        text: "Recuerda elegir un proveedor y agregar al menos un producto para realizar el pedido",
+        confirmButtonText: "Continuar",
+        allowOutsideClick: false,
+        showCancelButton: false,
+      });
+      return;
+    }
+
+    const newOrderData = {
+      user: numericId,
+      status: "Pendiente",
+      supplier: numericSupplierId,
+      items: items,
+    };
+
+    console.log("la data pa hacer la llamada", newOrderData);
+    try {
+      await createOrder(newOrderData);
+      Swal.fire({
+        icon: "success",
+        title: "Operación exitosa",
+        text: "El pedido ha sido registrado de forma exitosa",
+        confirmButtonText: "Continuar",
+        allowOutsideClick: false,
+        showCancelButton: false,
+      });
+      navigate("/Pedidos");
+    } catch (error) {
+      onError(error);
+    }
+  };
+
+  const onError = (error) => {
+    Swal.fire({
+      icon: "error",
+      title: "Algo salió mal",
+      text: "Ocurrió un error al registrar el producto, intentalo de nuevo",
+      confirmButtonText: "Continuar",
+      allowOutsideClick: false,
+      showCancelButton: false,
+    });
+    console.log("Esto está ocurriendo", error);
   };
 
   return (
     <>
       <Navbar />
       <div className="container-principal">
-        <div className="create-order-container">
+        <form className="create-order-container">
           <div className="title-container-orders">
             <label className="create-order-title">
               Agregar pedido a poovedores
             </label>
           </div>
-
           <div className="line-orders"></div>
           <div className="form-suppliers">
             <label className="label-supplier">Proovedor</label>
             <Autocomplete
               disablePortal
               id="combo-box-demo"
-              options={suppliers}
               sx={{ width: "70vw", height: "8vh" }}
+              options={suppliers}
+              value={suppliers.find((sup) => sup.id === supplierId) || null} // Asegura que el valor inicial sea correcto o null
+              onChange={(event, newValue) => {
+                setSupplierId(newValue ? newValue.id : ""); // Guarda solo el ID o reinicia a cadena vacía
+              }}
+              getOptionLabel={(option) => (option ? option.label : "")}
+              isOptionEqualToValue={(option, value) => option.id === value.id} // Compara los id para determinar igualdad
               renderInput={(params) => (
-                <TextField {...params} label="Seleccione un proovedor" />
+                <TextField {...params} label="Seleccione un proveedor" />
               )}
             />
           </div>
           <div className="button-add-product-orders">
             <button
-              type="submit"
+              type="button"
               className="add-product-supplier"
-              onClick={openModal}
+              onClick={handleOpen}
             >
               Agregar producto
             </button>
@@ -104,7 +237,7 @@ function CreateOrders() {
                       <TableCell component="th" scope="row">
                         {row.name}
                       </TableCell>
-                      <TableCell>{row.cuality}</TableCell>
+                      <TableCell>{row.quantity}</TableCell>
                       <TableCell align="right">
                         <IconButton
                           onClick={() => handleDelete(row.name)}
@@ -123,28 +256,71 @@ function CreateOrders() {
             <div className="line-orders" />
           </div>
           <div className="button-add-orders-container">
-            <button type="submit" className="add-order">
+            <button type="submit" className="add-order" onClick={handleSumbit}>
               Agregar pedido
             </button>
           </div>
-        </div>
+        </form>
       </div>
       <div className="modal-container">
-        <Dialog
-          visible={modalIsOpen}
-          draggable={false}
-          closable={false}
-          modal={true}
-          onHide={closeModal}
-          className="dialog-update-product"
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={open}
         >
-          <div className="close-button-container">
-            <button className="close-button" onClick={closeModal}>
-              X
-            </button>
-          </div>
-          <h3 className="title-add-product">Agregar un nuevo producto</h3>
-        </Dialog>
+          <Fade in={open}>
+            <Box sx={style}>
+              <div className="close-button-container">
+                <button className="close-button" onClick={handleClose}>
+                  X
+                </button>
+              </div>
+              <Typography
+                id="transition-modal-title"
+                variant="h6"
+                component="h2"
+              >
+                Agregar producto
+              </Typography>
+              <label className="label-product">Producto</label>
+              <Autocomplete
+                key={selectedProduct ? selectedProduct.id : "no-product"}
+                disablePortal
+                id="combo-box-demo"
+                options={products}
+                sx={{ width: "20vw", height: "6vh" }}
+                value={selectedProduct}
+                onChange={(event, newValue) => {
+                  setSelectedProduct(newValue);
+                }}
+                getOptionLabel={(option) => option.label}
+                isOptionEqualToValue={(option, value) =>
+                  option && value && option.id === value.id
+                }
+                renderInput={(params) => (
+                  <TextField {...params} label="Seleccione un producto" />
+                )}
+              />
+              <label className="label-product">Cantidad</label>
+              <input
+                type="text"
+                className="input-product-amount"
+                placeholder="Cantidad del producto"
+                onChange={(e) => setQuantity(e.target.value)}
+                required
+              />
+              <div className="button-add-product-modal">
+                <button
+                  type="submit"
+                  className="add-product-supplier"
+                  onClick={handleAddProduct}
+                >
+                  Agregar producto
+                </button>
+              </div>
+            </Box>
+          </Fade>
+        </Modal>
       </div>
     </>
   );

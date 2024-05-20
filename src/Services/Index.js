@@ -7,9 +7,14 @@ const endpoints = {
     getProductDetails: (productId) => `${URL}/inventory/products/${productId}/`,
     updateProduct: (productId) => `${URL}/inventory/products/${productId}/`,
     getSedes: `${URL}/inventory/users/`,
-    getProductsSede: (sedeId) => `${URL}/inventory/products/users/?user=${sedeId}`,
+    getProductsSede: (sedeId) =>
+      `${URL}/inventory/products/users/?user=${sedeId}`,
     getOrders: `${URL}/inventory/orders/`,
-    updateStatusOrders: `${URL}/inventory/order/update-order-status/`
+    updateStatusOrders: `${URL}/inventory/order/update-order-status/`,
+    createOrder: `${URL}/inventory/order/create/`,
+  },
+  supplier: {
+    getSuppliers: `${URL}/inventory/suppliers/`,
   },
 };
 

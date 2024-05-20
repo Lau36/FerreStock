@@ -95,3 +95,30 @@
 .footer-line{
     margin-top: 40px;
 }
+
+.label-product{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .input-product-amount{
+  width: 18.8vw;
+  height: 4.8vh;
+  font-size: 1.8vh;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #979696;
+  border-radius: 0.25rem;
+  }
+
+  .button-add-product-modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

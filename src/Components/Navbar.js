@@ -4,8 +4,6 @@ import logo from "../Resources/logoNavbar.png";
 import { logout } from "../api/api";
 import { createBrowserHistory } from "history";
 
-
-
 //Navbar
 function Navbar() {
   const tokenAccess = localStorage.getItem("token");
@@ -17,6 +15,8 @@ function Navbar() {
       if (response.status === 200) {
         window.localStorage.clear();
         window.sessionStorage.clear();
+        localStorage.removeItem("token");
+        localStorage.removeItem("loggedIn");
         history.replace("/");
         window.location.href = "./";
       }

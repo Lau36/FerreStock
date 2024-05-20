@@ -81,7 +81,6 @@ function Home() {
     };
     setProductosSeleccionados(nuevosProductos);
 
-    
     if (productosSeleccionados[index].pendiente) {
       setCantidadPendiente(value);
     }
@@ -144,21 +143,37 @@ function Home() {
                             type="number"
                             value={producto.cantidad}
                             onChange={(e) =>
-                              handleCantidadChange(index, parseInt(e.target.value))
+                              handleCantidadChange(
+                                index,
+                                parseInt(e.target.value)
+                              )
                             }
                           />
                         </TableCell>
                         <TableCell align="right">
-                          ${typeof producto.precioTotal === 'number' ? producto.precioTotal.toFixed(2) : ''}
+                          $
+                          {typeof producto.precioTotal === "number"
+                            ? producto.precioTotal.toFixed(2)
+                            : ""}
                         </TableCell>
-                        <TableCell align="center" className="checkbox-container">
-                          <label className={`checkbox-custom-label ${producto.pendiente ? 'checked' : 'unchecked'}`} htmlFor={`checkbox-${index}`}>
+                        <TableCell
+                          align="center"
+                          className="checkbox-container"
+                        >
+                          <label
+                            className={`checkbox-custom-label ${
+                              producto.pendiente ? "checked" : "unchecked"
+                            }`}
+                            htmlFor={`checkbox-${index}`}
+                          >
                             <input
                               type="checkbox"
                               id={`checkbox-${index}`}
                               checked={producto.pendiente}
                               onChange={(e) => {
-                                const nuevosProductos = [...productosSeleccionados];
+                                const nuevosProductos = [
+                                  ...productosSeleccionados,
+                                ];
                                 nuevosProductos[index] = {
                                   ...productosSeleccionados[index],
                                   pendiente: e.target.checked,
@@ -167,24 +182,25 @@ function Home() {
 
                                 // Si está seleccionado como pendiente, establecer la cantidad pendiente
                                 if (e.target.checked) {
-                                  setCantidadPendiente(productosSeleccionados[index].cantidad);
+                                  setCantidadPendiente(
+                                    productosSeleccionados[index].cantidad
+                                  );
                                 } else {
                                   setCantidadPendiente(0);
                                 }
                               }}
-                              style={{ display: 'none' }} // Ocultar el checkbox predeterminado
+                              style={{ display: "none" }} // Ocultar el checkbox predeterminado
                             />
                             <span className="checkbox-custom" />
                           </label>
                         </TableCell>
-
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
             </div>
-            {typeof totalAPagar === 'number' && (
+            {typeof totalAPagar === "number" && (
               <div className="total-a-pagar">
                 <strong>Total a pagar: ${totalAPagar.toFixed(2)}</strong>
               </div>
@@ -202,9 +218,7 @@ function Home() {
         </div>
       </div>
       <div>
-        {modalIsOpen && (
-          <div className="overlay" onClick={closeModal}></div>
-        )}
+        {modalIsOpen && <div className="overlay" onClick={closeModal}></div>}
         <div className="modal-container">
           <Dialog
             visible={modalIsOpen}
@@ -219,9 +233,7 @@ function Home() {
                 X
               </button>
             </div>
-            <h3 className="title-add-product">
-              Agregar un nuevo producto
-            </h3>
+            <h3 className="title-add-product">Agregar un nuevo producto</h3>
             <AddProducts closeModal={closeModal} />
           </Dialog>
         </div>
