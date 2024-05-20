@@ -1,0 +1,150 @@
+.conainter-principal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60vh;
+}
+
+.create-order-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFFF;
+    border-radius: 10px;
+    flex-direction: column;
+    padding: 1vw; 
+    width: 70vw; 
+    height: 90vh; /*esto hace que cambie*/
+    margin: 0 auto;
+    margin-top: 3%;
+}
+
+.title-container-orders{
+    margin-top: px;
+    color: black;
+    margin-bottom: 1.5vh;
+
+}
+
+.create-order-title{
+    font-size: 1.5vw;
+    font-weight: bolder;
+}
+
+.line-orders{
+    background-color: #30348C;
+    height: 0.5px;
+    margin: 1px;
+    margin-bottom: 15px;
+}
+
+.line-orders, .footer-line{
+    width: 100%;
+    margin: 1px;
+    margin-bottom: 15px;
+}
+
+.form-suppliers{
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    background-color: #FFFF;
+}
+
+.label-supplier{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.button-add-product-orders{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-self: flex-start;
+}
+
+.add-product-supplier, .add-order{
+    border: none;
+    border-radius: 5px;
+    background-color: #30348C;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 10%;    
+    filter: drop-shadow(3px 5px 5px rgba(0, 0, 0, 0.3));
+}
+
+.products-container{
+    margin-top: 10px;
+    overflow: auto;
+    height: 300px;
+}
+
+.button-add-orders-container{
+    margin-top: -10px;
+    width: 30%;
+    height: 700px;
+    margin-bottom: -80vh;
+}
+
+.add-order{
+    width: 100%;
+}
+
+.footer-line{
+    margin-top: 40px;
+}
+
+
+.label-product{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    margin-top: 18px;
+  }
+
+  .input-product-amount{
+  width: 100%;
+  height: 100%;
+  font-size: 100%;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  color: #535353;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #b8b8b9;
+  border-radius: 0.25rem;
+  margin-right: 20px;
+  }
+
+  .input-amount-container{
+    width: 94%;
+    height: 40px;
+  }
+
+  .button-add-product-modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add-product-supplier:hover{
+    background-color: #5e6191;
+  }
+
+  .add-order:hover{
+    background-color: #5e6191;
+  }
+
+  @media (min-width: 1200px) and (min-height: 1080px)  {
+    .create-order-container {
+        height: 80vh; 
+    }
+    .title-container-orders{
+        margin-top: -190px;
+    }
+}

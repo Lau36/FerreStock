@@ -7,12 +7,25 @@ import { getProducts } from "../Services/Products";
 import ProductList from "../Components/ProductList";
 import { Dialog } from "primereact/dialog";
 import { ReactComponent as SearchIcon } from "../Resources/lupa-de-busqueda.svg";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TextField,
+} from "@mui/material";
 
-// Principal function of Home Page
 function Home() {
   const [productos, setProductos] = useState([]);
   const [productosSeleccionados, setProductosSeleccionados] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [totalAPagar, setTotalAPagar] = useState(0);
+
+  const [cantidadPendiente, setCantidadPendiente] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +35,13 @@ function Home() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const total = productosSeleccionados.reduce((total, producto) => {
+      return total + (producto.precioTotal || 0);
+    }, 0);
+    setTotalAPagar(total);
+  }, [productosSeleccionados]);
 
   const agregarProductoSeleccionado = (producto) => {
     const productoExistente = productosSeleccionados.find(
@@ -52,13 +72,23 @@ function Home() {
     setSearchTerm(event.target.value);
   };
 
-  /*Refresh modal and close sale*/
+  const handleCantidadChange = (index, value) => {
+    const nuevosProductos = [...productosSeleccionados];
+    nuevosProductos[index] = {
+      ...productosSeleccionados[index],
+      cantidad: value,
+      precioTotal: (value || 0) * productosSeleccionados[index].price,
+    };
+    setProductosSeleccionados(nuevosProductos);
+
+    if (productosSeleccionados[index].pendiente) {
+      setCantidadPendiente(value);
+    }
+  };
+
   const cerrarVenta = () => {
     setProductosSeleccionados([]);
   };
-
-  /*Modal*/
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -68,7 +98,6 @@ function Home() {
     setModalIsOpen(false);
   };
 
-  // Design
   return (
     <>
       <Navbar />
@@ -93,72 +122,120 @@ function Home() {
         </div>
         <div className="container-venta">
           <div className="card">
-            <h2 className="card-title">Venta actual</h2>
-            <div
-              className="productos-seleccionados"
-              style={{ maxHeight: "200px", overflowY: "auto" }}
-            >
-              {productosSeleccionados.map((producto, index) => (
-                <div key={index} className="producto-seleccionado">
-                  <p>
-                    {producto.name} - Cantidad:{" "}
-                    <input
-                      type="number"
-                      min="1"
-                      value={producto.cantidad}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        const nuevosProductos = [...productosSeleccionados];
-                        nuevosProductos[index] = {
-                          ...producto,
-                          cantidad: value,
-                          precioTotal: (value || 0) * producto.price,
-                        };
-                        setProductosSeleccionados(nuevosProductos);
-                      }}
-                    />{" "}
-                    - Precio Total:{" "}
-                    {isNaN(producto.precioTotal) ||
-                    typeof producto.precioTotal !== "number"
-                      ? 0
-                      : `$${producto.precioTotal.toFixed(2)}`}
-                  </p>
-                </div>
-              ))}
+            <h2 className="card-title">Productos seleccionados</h2>
+            <div className="table-container">
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Nombre</TableCell>
+                      <TableCell align="center">Cantidad</TableCell>
+                      <TableCell align="center">Precio Total</TableCell>
+                      <TableCell align="center">Pendiente</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {productosSeleccionados.map((producto, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{producto.name}</TableCell>
+                        <TableCell align="right">
+                          <TextField
+                            type="number"
+                            value={producto.cantidad}
+                            onChange={(e) =>
+                              handleCantidadChange(
+                                index,
+                                parseInt(e.target.value)
+                              )
+                            }
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          $
+                          {typeof producto.precioTotal === "number"
+                            ? producto.precioTotal.toFixed(2)
+                            : ""}
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          className="checkbox-container"
+                        >
+                          <label
+                            className={`checkbox-custom-label ${
+                              producto.pendiente ? "checked" : "unchecked"
+                            }`}
+                            htmlFor={`checkbox-${index}`}
+                          >
+                            <input
+                              type="checkbox"
+                              id={`checkbox-${index}`}
+                              checked={producto.pendiente}
+                              onChange={(e) => {
+                                const nuevosProductos = [
+                                  ...productosSeleccionados,
+                                ];
+                                nuevosProductos[index] = {
+                                  ...productosSeleccionados[index],
+                                  pendiente: e.target.checked,
+                                };
+                                setProductosSeleccionados(nuevosProductos);
+
+                                // Si está seleccionado como pendiente, establecer la cantidad pendiente
+                                if (e.target.checked) {
+                                  setCantidadPendiente(
+                                    productosSeleccionados[index].cantidad
+                                  );
+                                } else {
+                                  setCantidadPendiente(0);
+                                }
+                              }}
+                              style={{ display: "none" }} // Ocultar el checkbox predeterminado
+                            />
+                            <span className="checkbox-custom" />
+                          </label>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
-            <button className="cerrar-venta" onClick={cerrarVenta}>
-              Cerrar venta
-            </button>
+            {typeof totalAPagar === "number" && (
+              <div className="total-a-pagar">
+                <strong>Total a pagar: ${totalAPagar.toFixed(2)}</strong>
+              </div>
+            )}
+
+            <div className="buttons-container">
+              <button className="cerrar-venta" onClick={cerrarVenta}>
+                Actualizar inventario
+              </button>
+            </div>
             <button className="agregar-producto" onClick={openModal}>
               <span>+</span> Agregar producto
             </button>
-
-            <div>
-              {modalIsOpen && (
-                <div className="overlay" onClick={closeModal}></div>
-              )}
-              <div className="modal-container">
-                <Dialog
-                  visible={modalIsOpen}
-                  draggable={false}
-                  closable={false}
-                  modal={true}
-                  onHide={closeModal}
-                  className="dialog-update-product"
-                >
-                  <div className="close-button-container">
-                    <button className="close-button" onClick={closeModal}>
-                      X
-                    </button>
-                  </div>
-                  <h3 className="title-add-product">
-                    Agregar un nuevo producto
-                  </h3>
-                  <AddProducts closeModal={closeModal} />
-                </Dialog>
-              </div>
-            </div>
           </div>
+        </div>
+      </div>
+      <div>
+        {modalIsOpen && <div className="overlay" onClick={closeModal}></div>}
+        <div className="modal-container">
+          <Dialog
+            visible={modalIsOpen}
+            draggable={false}
+            closable={false}
+            modal={true}
+            onHide={closeModal}
+            className="dialog-update-product"
+          >
+            <div className="close-button-container">
+              <button className="close-button" onClick={closeModal}>
+                X
+              </button>
+            </div>
+            <h3 className="title-add-product">Agregar un nuevo producto</h3>
+            <AddProducts closeModal={closeModal} />
+          </Dialog>
         </div>
       </div>
     </>

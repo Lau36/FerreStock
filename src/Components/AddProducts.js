@@ -53,7 +53,7 @@ function AddProducts({ closeModal }) {
     Swal.fire({
       icon: "error",
       title: "Algo salió mal",
-      text: "Ocurrió un error al crear el curso, intentalo de nuevo",
+      text: "Ocurrió un error al registrar el producto, intentalo de nuevo",
       confirmButtonText: "Continuar",
       allowOutsideClick: false,
       showCancelButton: false,

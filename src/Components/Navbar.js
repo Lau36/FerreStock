@@ -15,6 +15,8 @@ function Navbar() {
       if (response.status === 200) {
         window.localStorage.clear();
         window.sessionStorage.clear();
+        localStorage.removeItem("token");
+        localStorage.removeItem("loggedIn");
         history.replace("/");
         window.location.href = "./";
       }
@@ -25,11 +27,11 @@ function Navbar() {
 
   return (
     <nav
-      className="navbar navbar-expand-lg"
+      className="navbar "
       style={{ backgroundColor: "#F2F2F2", width: "100%" }}
     >
-      <div className="container-fluid d-flex justify-content-between align-items-center">
-        <ul className="navbarListado d-flex">
+      <div>
+        <ul className="navbarListado ">
           <a href="/">
             <img src={logo} alt="Logo" className="imageNav" />
           </a>
@@ -43,8 +45,12 @@ function Navbar() {
               Inventario
             </a>
             <span style={{ marginRight: "30px" }}></span>
-            <a href="/" className="navbar-home">
+            <a href="/Proveedores" className="navbar-home">
               Proveedores
+            </a>
+            <span style={{ marginRight: "30px" }}></span>
+            <a href="/Pedidos" className="navbar-home">
+              Pedidos
             </a>
             <span style={{ marginRight: "30px" }}></span>
             <a className="navbar-home" onClick={handleLogout}>
