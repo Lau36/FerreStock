@@ -133,7 +133,7 @@ const updateProductStock = async (productId, isPending, quantity) => {
   const body = {
     product_id: productId,
     quantity: quantity,
-    is_pending: isPending ? "true" : "false", 
+    is_pending: isPending.toString(),
   };
 
   try {
@@ -162,6 +162,7 @@ const getProductsFiltred = async () => {
 
   return pendingProducts;
 };
+
 
 
 export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder,updateProductStock, getProductsFiltred };

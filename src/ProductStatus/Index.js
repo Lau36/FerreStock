@@ -15,8 +15,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { getProductsFiltred } from "../Services/Products";
+import { getProductsFiltred, updateProductStock } from "../Services/Products";
 
 function ProductStatus() {
     const [page, setPage] = useState(0);
@@ -24,7 +25,8 @@ function ProductStatus() {
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [pendingQuantity, setPendingQuantity] = useState(0);
+    const [newQuantity, setNewQuantity] = useState(0);
+    const [isPending, setIsPending] = useState(false);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -36,7 +38,8 @@ function ProductStatus() {
 
     const handleOpen = (product) => {
         setSelectedProduct(product);
-        setPendingQuantity(product.pending_stock);
+        setNewQuantity(0); // Reset new quantity input
+        setIsPending(product.pending_stock > 0); // Set initial pending status
         setOpen(true);
     };
 
@@ -53,8 +56,24 @@ function ProductStatus() {
         setPage(0);
     };
 
-    const handlePendingQuantityChange = (event) => {
-        setPendingQuantity(event.target.value);
+    const handleNewQuantityChange = (event) => {
+        setNewQuantity(Number(event.target.value)); 
+    };
+
+    const handleSaveChanges = async () => {
+        if (selectedProduct) {
+            try {
+                await updateProductStock(selectedProduct.id, false, newQuantity);
+                const updatedProducts = products.map(product =>
+                    product.id === selectedProduct.id
+                        ? { ...product, pending_stock: newQuantity }
+                        : product
+                );
+                handleClose();
+            } catch (error) {
+                console.error("Error updating product stock:", error);
+            }
+        }
     };
 
     return (
@@ -124,34 +143,37 @@ function ProductStatus() {
                 </div>
             </div>
             <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                className="modal"
-            >
-                <Box className="modal-box">
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Cambiar estado del producto
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        {selectedProduct && `Producto: ${selectedProduct.name}`}
-                    </Typography>
-                    <TextField
-                        label="Cantidad pendiente"
-                        type="number"
-                        value={pendingQuantity}
-                        onChange={handlePendingQuantityChange}
-                        fullWidth
-                        margin="normal"
-                    />
-                    <Button variant="contained" color="primary" onClick={handleClose}>
-                        Guardar
-                    </Button>
-                </Box>
-            </Modal>
-        </div>
-    );
+open={open}
+onClose={handleClose}
+aria-labelledby="modal-modal-title"
+aria-describedby="modal-modal-description"
+className="modal"
+>
+<Box className="modal-box">
+    <Typography id="modal-modal-title" variant="h6" component="h2">
+        Cambiar estado del producto
+    </Typography>
+    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        {selectedProduct && `Producto: ${selectedProduct.name}`}
+    </Typography>
+    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+        Cantidad pendiente actual: {selectedProduct && selectedProduct.pending_stock}
+    </Typography>
+    <TextField
+        label="Cantidad entregada"
+        type="number"
+        value={newQuantity}
+        onChange={handleNewQuantityChange}
+        fullWidth
+        margin="normal"
+    />
+    <Button variant="contained" color="primary" onClick={handleSaveChanges} sx={{ mt: 2 }}>
+        Guardar
+    </Button>
+</Box>
+</Modal>
+</div>
+);
 }
 
 export default ProductStatus;

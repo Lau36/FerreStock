@@ -60,7 +60,7 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
           />
           <h3 style={{ textAlign: "center" }}>{producto.name}</h3>
           <p>${producto.price}</p>
-          <p>Disponible: {producto.stock}</p>
+          <p>Disponible: {producto.stock - producto.pending_stock}</p>
           {showAddButton && (
             <button
               className="agregar-button"
@@ -124,7 +124,7 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
               }}
             >
               <p>Precio: ${seleccionarProducto?.price}</p>
-              <p>Stock: {seleccionarProducto?.stock + seleccionarProducto?.pending_stock }</p>
+              <p>Stock: {seleccionarProducto?.stock }</p>
               <p>Pendiente en stock: {seleccionarProducto?.pending_stock}</p>
             </div>
             <div

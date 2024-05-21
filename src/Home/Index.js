@@ -80,11 +80,12 @@ function Home() {
     setSearchTerm(event.target.value);
   };
 
-
   const actualizarInventario = async () => {
     for (const producto of productosSeleccionados) {
       try {
-        await updateProductStock(producto.id, producto.pendiente, producto.cantidad);
+        if (producto.pendiente == true){
+          await updateProductStock(producto.id, producto.pendiente, producto.cantidad);
+        }
       } catch (error) {
         console.error("Error al actualizar el inventario:", error);
       }
