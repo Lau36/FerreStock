@@ -42,6 +42,15 @@ function Home() {
     setTotalAPagar(total);
   }, [productosSeleccionados]);
 
+  const handleSwitchChange = (index, checked) => {
+    const nuevosProductos = [...productosSeleccionados];
+    nuevosProductos[index] = {
+      ...productosSeleccionados[index],
+      pendiente: checked,
+    };
+    setProductosSeleccionados(nuevosProductos);
+  };
+
   const agregarProductoSeleccionado = (producto) => {
     const productoExistente = productosSeleccionados.find(
       (p) => p.id === producto.id
@@ -71,24 +80,18 @@ function Home() {
     setSearchTerm(event.target.value);
   };
 
-  
+
   const actualizarInventario = async () => {
     for (const producto of productosSeleccionados) {
       try {
-        if (producto.pendiente) {
-          // Si es pendiente, sumar al pending stock
-          await updateProductStock(producto.id, true, producto.cantidad);
-        } else {
-          // Si no es pendiente, restar al stock normal
-          await updateProductStock(producto.id, false, producto.cantidad);
-        }
+        await updateProductStock(producto.id, producto.pendiente, producto.cantidad);
       } catch (error) {
         console.error("Error al actualizar el inventario:", error);
       }
     }
     setProductosSeleccionados([]);
   };
-  
+
 
   const handleCantidadChange = (index, newCantidad) => {
     const nuevosProductos = [...productosSeleccionados];
@@ -153,24 +156,23 @@ function Home() {
                             type="number"
                             value={producto.cantidad}
                             onChange={(e) =>
-                              handleCantidadChange(index, parseInt(e.target.value))
+                              handleCantidadChange(
+                                index,
+                                parseInt(e.target.value)
+                              )
                             }
                           />
                         </TableCell>
                         <TableCell align="right">
-                          ${typeof producto.precioTotal === 'number' ? producto.precioTotal.toFixed(2) : ''}
+                          $
+                          {typeof producto.precioTotal === "number"
+                            ? producto.precioTotal.toFixed(2)
+                            : ""}
                         </TableCell>
                         <TableCell align="center" className="switch-container">
                           <Switch
                             checked={producto.pendiente || false}
-                            onChange={(e) => {
-                              const nuevosProductos = [...productosSeleccionados];
-                              nuevosProductos[index] = {
-                                ...productosSeleccionados[index],
-                                pendiente: e.target.checked,
-                              };
-                              setProductosSeleccionados(nuevosProductos);
-                            }}
+                            onChange={(e) => handleSwitchChange(index, e.target.checked)}
                           />
                         </TableCell>
                       </TableRow>
@@ -179,7 +181,7 @@ function Home() {
                 </Table>
               </TableContainer>
             </div>
-            {typeof totalAPagar === 'number' && (
+            {typeof totalAPagar === "number" && (
               <div className="total-a-pagar">
                 <strong>Total a pagar: ${totalAPagar.toFixed(2)}</strong>
               </div>
@@ -195,7 +197,7 @@ function Home() {
             </button>
             <button
               className="productos-pendientes"
-              onClick={() => (window.location.href = '/ProductosPendientes')}
+              onClick={() => (window.location.href = '/EstadoProductos')}
             >
               Estado de productos
             </button>
@@ -203,9 +205,7 @@ function Home() {
         </div>
       </div>
       <div>
-        {modalIsOpen && (
-          <div className="overlay" onClick={closeModal}></div>
-        )}
+        {modalIsOpen && <div className="overlay" onClick={closeModal}></div>}
         <div className="modal-container">
           <Dialog
             visible={modalIsOpen}
@@ -220,9 +220,7 @@ function Home() {
                 X
               </button>
             </div>
-            <h3 className="title-add-product">
-              Agregar un nuevo producto
-            </h3>
+            <h3 className="title-add-product">Agregar un nuevo producto</h3>
             <AddProducts closeModal={closeModal} />
           </Dialog>
         </div>

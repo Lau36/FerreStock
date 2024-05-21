@@ -1,5 +1,5 @@
 import "./ProdcutStatus.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,22 +13,36 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Switch from '@mui/material/Switch';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import { getProductsFiltred } from "../Services/Products";
 
-function createData(name, stock, pending_stock, is_pending) {
-    const available = stock - pending_stock;
-    return { name, stock, pending_stock, is_pending, available };
-}
-
-const rows = [
-    createData('Destornillador', 159, 6, true),
-    createData('Cinta', 237, 9, true),
-    createData('Eclair', 262, 16, true),
-    // Añade más datos si es necesario para probar la paginación
-];
 function ProductStatus() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [products, setProducts] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [pendingQuantity, setPendingQuantity] = useState(0);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const productsData = await getProductsFiltred();
+            setProducts(productsData);
+        };
+        fetchProducts();
+    }, []);
+
+    const handleOpen = (product) => {
+        setSelectedProduct(product);
+        setPendingQuantity(product.pending_stock);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -37,6 +51,10 @@ function ProductStatus() {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+    };
+
+    const handlePendingQuantityChange = (event) => {
+        setPendingQuantity(event.target.value);
     };
 
     return (
@@ -57,30 +75,33 @@ function ProductStatus() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                        <TableRow
-                                            key={row.name}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell component="th" scope="row">
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell align="right">{row.stock}</TableCell>
-                                            <TableCell align="right">{row.pending_stock}</TableCell>
-                                            <TableCell align="right">{row.available}</TableCell>
-                                            <TableCell align="right"><Switch
-                                                    checked={row.is_pending}
-                                                    className={row.is_pending ? "switch-pending" : "switch-available"}
-                                                    disabled
-                                                /></TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        const available = row.stock - row.pending_stock;
+                                        return (
+                                            <TableRow
+                                                key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell component="th" scope="row">
+                                                    {row.name}
+                                                </TableCell>
+                                                <TableCell align="right">{row.stock}</TableCell>
+                                                <TableCell align="right">{row.pending_stock}</TableCell>
+                                                <TableCell align="right">{available}</TableCell>
+                                                <TableCell align="right">
+                                                    <Button variant="contained" color="primary" onClick={() => handleOpen(row)}>
+                                                        Cambiar estado
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
-                                count={rows.length}
+                                count={products.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onPageChange={handleChangePage}
@@ -93,20 +114,42 @@ function ProductStatus() {
                     <Card className="card-information">
                         <CardContent>
                             <Typography variant="h5" component="div">
-                                Información del Producto
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                Detalles adicionales
+                                Información de productos
                             </Typography>
                             <Typography variant="body2">
-                                Aquí puedes mostrar información detallada del producto seleccionado.
-                                <br />
-                                {'"Aún no hay datos disponibles"'}
+                                Cantidad de productos en estado pendiente: {products.length}
                             </Typography>
                         </CardContent>
                     </Card>
                 </div>
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                className="modal"
+            >
+                <Box className="modal-box">
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Cambiar estado del producto
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {selectedProduct && `Producto: ${selectedProduct.name}`}
+                    </Typography>
+                    <TextField
+                        label="Cantidad pendiente"
+                        type="number"
+                        value={pendingQuantity}
+                        onChange={handlePendingQuantityChange}
+                        fullWidth
+                        margin="normal"
+                    />
+                    <Button variant="contained" color="primary" onClick={handleClose}>
+                        Guardar
+                    </Button>
+                </Box>
+            </Modal>
         </div>
     );
 }
