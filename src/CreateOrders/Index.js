@@ -46,8 +46,13 @@ function CreateOrders() {
 
   const handleDelete = (name) => {
     const filteredRows = rows.filter((row) => row.name !== name);
+    const filteredItems = items.filter(
+      (item) => item.product !== rows.find((row) => row.name === name).id
+    );
     setRows(filteredRows);
+    setItems(filteredItems);
   };
+
   const [open, setOpen] = useState(false);
   const handleOpen = (e) => {
     e.preventDefault();
