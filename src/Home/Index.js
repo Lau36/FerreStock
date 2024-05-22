@@ -85,7 +85,7 @@ function Home() {
   const actualizarInventario = async () => {
     for (const producto of productosSeleccionados) {
       try {
-        if (producto.pendiente == true){
+        if (producto.pendiente === true){
           await updateProductStock(producto.id, producto.pendiente, producto.cantidad);
         }
       } catch (error) {
