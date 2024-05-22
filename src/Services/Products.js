@@ -62,6 +62,20 @@ const updateProduct = async (body, productId) => {
   return response.data;
 };
 
+const deleteProduct = async (productId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const response = await axios.delete(
+    endpoints.products.deleteProduct(productId),
+    config
+  );
+  return response.data;
+};
+
 const getSedes = async () => {
   const tokenAccess = localStorage.getItem("token");
   const config = {
@@ -75,7 +89,6 @@ const getSedes = async () => {
   return response.data;
 };
 
-
 const getProductsSede = async (sedeId) => {
   const tokenAccess = localStorage.getItem("token");
   const config = {
@@ -83,8 +96,11 @@ const getProductsSede = async (sedeId) => {
       Authorization: `Token ${tokenAccess}`,
     },
   };
- 
-  const response = await axios.get(endpoints.products.getProductsSede(sedeId), config);
+
+  const response = await axios.get(
+    endpoints.products.getProductsSede(sedeId),
+    config
+  );
 
   return response.data;
 };
@@ -102,7 +118,6 @@ const getOrders = async () => {
   return response.data;
 };
 
-
 const updateStatusOrder = async (orderId) => {
   const tokenAccess = localStorage.getItem("token");
   const config = {
@@ -111,7 +126,7 @@ const updateStatusOrder = async (orderId) => {
     },
   };
   const body = {
-    order_id: orderId
+    order_id: orderId,
   };
 
   const response = await axios.post(
@@ -163,6 +178,21 @@ const getProductsFiltred = async () => {
   return pendingProducts;
 };
 
+const createOrder = async (body) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const response = await axios.post(
+    endpoints.products.createOrder,
+    body,
+    config
+  );
+  return response.data;
+};
 
 
-export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder,updateProductStock, getProductsFiltred };
+export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder,updateProductStock, getProductsFiltred,createOrder,
+  deleteProduct };

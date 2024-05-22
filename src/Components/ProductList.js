@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import "./ProductList.css";
-import { getProductDetails } from "../Services/Products";
+import { deleteProduct, getProductDetails } from "../Services/Products";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import defaultProductImage from "../Resources/herramientas.jpg";
 import UpdateProduct from "./UpdateProduct";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Swal from "sweetalert2";
 
-function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showAddButton }) {
+function ProductList({
+  productos,
+  agregarProductoSeleccionado,
+  searchTerm,
+  showAddButton,
+}) {
   const [modalShow, setModalShow] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [seleccionarProducto, setSeleccionarProducto] = useState(null);
@@ -36,6 +44,56 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
     setModalShow(false);
   };
 
+  const handleDelete = (idProduct) => {
+    console.log("EL ID DEL PRODUCTO", idProduct);
+    const productID = idProduct;
+    Swal.fire({
+      title: "Atención, estás seguro de realizar esta acción",
+      text: "Vas a eliminar un producto de tu inventario",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      showLoaderOnConfirm: true,
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Confirmar`,
+      allowOutsideClick: false,
+      cancelButtonText: "Cancelar",
+
+      preConfirm: () => {
+        return new Promise((resolve, reject) => {
+          console.log("EL ID QUE PASO ACÁ", productID);
+          deleteProduct(productID)
+            .then((response) => {
+              Swal.fire({
+                icon: "success",
+                title: "Operación exitosa",
+                text: "El producto fue eliminado correctamente",
+                confirmButtonText: "Continuar",
+                allowOutsideClick: false,
+                showCancelButton: false,
+              }).then(() => {
+                window.location.reload();
+              });
+            })
+            .catch((err) => {
+              onError(err);
+            });
+        });
+      },
+    });
+  };
+
+  const onError = (error) => {
+    Swal.fire({
+      icon: "error",
+      title: "Algo salió mal",
+      text: error || "Ocurrió un error al crear el usuario, intenta de nuevo",
+      confirmButtonText: "Continuar",
+      allowOutsideClick: false,
+      showCancelButton: false,
+    });
+  };
+
   const filteredProducts = productos.filter((producto) => {
     return (
       producto.name &&
@@ -50,6 +108,14 @@ function ProductList({ productos, agregarProductoSeleccionado, searchTerm, showA
     >
       {filteredProducts.map((producto, index) => (
         <div key={producto.id} className="producto-card">
+          <div className="button-delete-product-container">
+            <IconButton
+              onClick={() => handleDelete(producto?.id)}
+              aria-label="delete"
+            >
+              <DeleteIcon style={{ color: "#CF3429" }} />
+            </IconButton>
+          </div>
           <img
             src={producto.image || defaultProductImage}
             alt={producto.name}
