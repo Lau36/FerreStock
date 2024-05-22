@@ -10,24 +10,28 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { getProductsFiltred, updateProductStock } from "../Services/Products";
 
+/**
+ * Funcion principal de la tabla con productos que estan en estado pendiente
+ * @returns Products
+ */
 function ProductStatus() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [products, setProducts] = useState([]);
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [newQuantity, setNewQuantity] = useState(0);
+    const [nuevaCantidad, setnuevaCantidad] = useState(0);
     const [isPending, setIsPending] = useState(false);
 
+    //Effect
     useEffect(() => {
         const fetchProducts = async () => {
             const productsData = await getProductsFiltred();
@@ -36,40 +40,44 @@ function ProductStatus() {
         fetchProducts();
     }, []);
 
-    const handleOpen = (product) => {
+    // Modal
+    const abrirModal = (product) => {
         setSelectedProduct(product);
-        setNewQuantity(0); // Reset new quantity input
-        setIsPending(product.pending_stock > 0); // Set initial pending status
+        setnuevaCantidad(0);
+        setIsPending(product.pending_stock > 0);
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const cerrarModal = () => {
         setOpen(false);
     };
 
+    // Pagination de la tabla
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const handleChangeRowsPerPage = (event) => {
+    const columnasPagina = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
 
-    const handleNewQuantityChange = (event) => {
-        setNewQuantity(Number(event.target.value)); 
+    // Nueva cantidad a quitar
+    const cambiarCantidad = (event) => {
+        setnuevaCantidad(Number(event.target.value));
     };
 
-    const handleSaveChanges = async () => {
+    // Funcion que llama servicio para guardar los cambios en la bd
+    const guardarCambios = async () => {
         if (selectedProduct) {
             try {
-                await updateProductStock(selectedProduct.id, false, newQuantity);
+                await updateProductStock(selectedProduct.id, false, nuevaCantidad);
                 const updatedProducts = products.map(product =>
                     product.id === selectedProduct.id
-                        ? { ...product, pending_stock: newQuantity }
+                        ? { ...product, pending_stock: nuevaCantidad }
                         : product
                 );
-                handleClose();
+                cerrarModal();
             } catch (error) {
                 console.error("Error updating product stock:", error);
             }
@@ -79,18 +87,21 @@ function ProductStatus() {
     return (
         <div>
             <Navbar />
+
             <div className="conteiner-product-status">
                 <div className="conteiner-table-status">
+                {/* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */}
+                    <h2 style={{ textAlign: "center", marginBottom: "30px", fontFamily: "sans-serif" }}>Productos en estado pendiente</h2>
                     <Box className="table-wrapper">
                         <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Nombre del producto</TableCell>
-                                        <TableCell align="right">Stock</TableCell>
-                                        <TableCell align="right">Cantidad pendiente</TableCell>
-                                        <TableCell align="right">Disponible</TableCell>
-                                        <TableCell align="right">Estado</TableCell>
+                                        <TableCell align="center">Nombre del producto</TableCell>
+                                        <TableCell align="center">Stock</TableCell>
+                                        <TableCell align="center">Cantidad pendiente</TableCell>
+                                        <TableCell align="center">Disponible</TableCell>
+                                        <TableCell align="center">Estado</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -101,16 +112,16 @@ function ProductStatus() {
                                                 key={row.name}
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
-                                                <TableCell component="th" scope="row">
+                                                <TableCell component="th" scope="row" align="center">
                                                     {row.name}
                                                 </TableCell>
-                                                <TableCell align="right">{row.stock}</TableCell>
-                                                <TableCell align="right">{row.pending_stock}</TableCell>
-                                                <TableCell align="right">{available}</TableCell>
-                                                <TableCell align="right">
-                                                    <Button variant="contained" color="primary" onClick={() => handleOpen(row)}>
+                                                <TableCell align="center">{row.stock}</TableCell>
+                                                <TableCell align="center">{row.pending_stock}</TableCell>
+                                                <TableCell align="center">{available}</TableCell>
+                                                <TableCell align="center">
+                                                    <button className="change-status" onClick={() => abrirModal(row)}>
                                                         Cambiar estado
-                                                    </Button>
+                                                    </button>
                                                 </TableCell>
                                             </TableRow>
                                         );
@@ -124,56 +135,68 @@ function ProductStatus() {
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                onRowsPerPageChange={columnasPagina}
                             />
                         </TableContainer>
                     </Box>
                 </div>
-                <div className="conteiner-information-product">
-                    <Card className="card-information">
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                Información de productos
-                            </Typography>
-                            <Typography variant="body2">
-                                Cantidad de productos en estado pendiente: {products.length}
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </div>
             </div>
             <Modal
-open={open}
-onClose={handleClose}
-aria-labelledby="modal-modal-title"
-aria-describedby="modal-modal-description"
-className="modal"
->
-<Box className="modal-box">
-    <Typography id="modal-modal-title" variant="h6" component="h2">
-        Cambiar estado del producto
-    </Typography>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        {selectedProduct && `Producto: ${selectedProduct.name}`}
-    </Typography>
-    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-        Cantidad pendiente actual: {selectedProduct && selectedProduct.pending_stock}
-    </Typography>
-    <TextField
-        label="Cantidad entregada"
-        type="number"
-        value={newQuantity}
-        onChange={handleNewQuantityChange}
-        fullWidth
-        margin="normal"
-    />
-    <Button variant="contained" color="primary" onClick={handleSaveChanges} sx={{ mt: 2 }}>
-        Guardar
-    </Button>
-</Box>
-</Modal>
-</div>
-);
+                open={open}
+                onClose={cerrarModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                className="modal"
+            >
+                <Box
+                    className="modal-box"
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 1,
+                    }}
+                >
+                    <IconButton
+                        aria-label="close"
+                        onClick={cerrarModal}
+                        sx={{ position: 'absolute', top: 8, right: 8 }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }} align="center">
+                        Cambiar estado del producto
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {selectedProduct && `Producto: ${selectedProduct.name}`}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Cantidad pendiente actual: {selectedProduct && selectedProduct.pending_stock}
+                    </Typography>
+                    <br />
+                    <TextField
+                        label="Cantidad entregada"
+                        type="number"
+                        value={nuevaCantidad}
+                        onChange={cambiarCantidad}
+                        fullWidth
+                        margin="normal"
+                    />
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+                        <Button variant="contained" sx={{ bgcolor: 'green' }} onClick={guardarCambios}>
+                            Guardar
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
+
+        </div>
+    );
 }
 
 export default ProductStatus;

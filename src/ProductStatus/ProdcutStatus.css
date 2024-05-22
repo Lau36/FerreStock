@@ -7,10 +7,9 @@
 }
 
 .conteiner-table-status {
-    display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%; 
+    width: 100%; 
     margin-left: 50px;
 }
 
@@ -48,3 +47,18 @@
     box-shadow: 24px;
     padding: 16px;
 }
+
+.change-status {
+    margin: 20px auto;
+    background-color: #067206c3;
+    color: white;
+    border: none;
+    padding: 5px 10px; 
+    font-size: 14px; 
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .change-status:hover {
+    background-color: #4bcc00;
+  }

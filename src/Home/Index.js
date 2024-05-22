@@ -15,8 +15,10 @@ import {
   TableRow,
   Paper,
   TextField,
+  IconButton,
 } from "@mui/material";
 import Switch from '@mui/material/Switch';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function Home() {
@@ -112,6 +114,11 @@ function Home() {
     setModalIsOpen(false);
   };
 
+  const eliminarProductoSeleccionado = (index) => {
+    const nuevosProductos = productosSeleccionados.filter((_, i) => i !== index);
+    setProductosSeleccionados(nuevosProductos);
+  };
+
   return (
     <>
       <Navbar />
@@ -146,6 +153,7 @@ function Home() {
                       <TableCell align="center">Cantidad</TableCell>
                       <TableCell align="center">Precio Total</TableCell>
                       <TableCell align="center">Pendiente</TableCell>
+                      <TableCell align="center">Eliminar</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -175,6 +183,11 @@ function Home() {
                             checked={producto.pendiente || false}
                             onChange={(e) => handleSwitchChange(index, e.target.checked)}
                           />
+                        </TableCell>
+                        <TableCell align="center">
+                          <IconButton onClick={() => eliminarProductoSeleccionado(index)}>
+                            <DeleteIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}
