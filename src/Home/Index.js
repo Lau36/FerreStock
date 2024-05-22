@@ -1,9 +1,8 @@
-// Home.js
 import "../Home/Home.css";
 import Navbar from "../Components/Navbar";
 import React, { useState, useEffect } from "react";
 import AddProducts from "../Components/AddProducts";
-import { getProducts } from "../Services/Products";
+import { getProducts, updateProductStock } from "../Services/Products";
 import ProductList from "../Components/ProductList";
 import { Dialog } from "primereact/dialog";
 import { ReactComponent as SearchIcon } from "../Resources/lupa-de-busqueda.svg";
@@ -16,7 +15,11 @@ import {
   TableRow,
   Paper,
   TextField,
+  IconButton,
 } from "@mui/material";
+import Switch from '@mui/material/Switch';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 function Home() {
   const [productos, setProductos] = useState([]);
@@ -24,8 +27,6 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [totalAPagar, setTotalAPagar] = useState(0);
-
-  const [cantidadPendiente, setCantidadPendiente] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +43,15 @@ function Home() {
     }, 0);
     setTotalAPagar(total);
   }, [productosSeleccionados]);
+
+  const handleSwitchChange = (index, checked) => {
+    const nuevosProductos = [...productosSeleccionados];
+    nuevosProductos[index] = {
+      ...productosSeleccionados[index],
+      pendiente: checked,
+    };
+    setProductosSeleccionados(nuevosProductos);
+  };
 
   const agregarProductoSeleccionado = (producto) => {
     const productoExistente = productosSeleccionados.find(
@@ -72,22 +82,28 @@ function Home() {
     setSearchTerm(event.target.value);
   };
 
-  const handleCantidadChange = (index, value) => {
+  const actualizarInventario = async () => {
+    for (const producto of productosSeleccionados) {
+      try {
+        if (producto.pendiente === true){
+          await updateProductStock(producto.id, producto.pendiente, producto.cantidad);
+        }
+      } catch (error) {
+        console.error("Error al actualizar el inventario:", error);
+      }
+    }
+    setProductosSeleccionados([]);
+  };
+
+
+  const handleCantidadChange = (index, newCantidad) => {
     const nuevosProductos = [...productosSeleccionados];
     nuevosProductos[index] = {
       ...productosSeleccionados[index],
-      cantidad: value,
-      precioTotal: (value || 0) * productosSeleccionados[index].price,
+      cantidad: newCantidad,
+      precioTotal: newCantidad * productosSeleccionados[index].price,
     };
     setProductosSeleccionados(nuevosProductos);
-
-    if (productosSeleccionados[index].pendiente) {
-      setCantidadPendiente(value);
-    }
-  };
-
-  const cerrarVenta = () => {
-    setProductosSeleccionados([]);
   };
 
   const openModal = () => {
@@ -96,6 +112,11 @@ function Home() {
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const eliminarProductoSeleccionado = (index) => {
+    const nuevosProductos = productosSeleccionados.filter((_, i) => i !== index);
+    setProductosSeleccionados(nuevosProductos);
   };
 
   return (
@@ -132,6 +153,7 @@ function Home() {
                       <TableCell align="center">Cantidad</TableCell>
                       <TableCell align="center">Precio Total</TableCell>
                       <TableCell align="center">Pendiente</TableCell>
+                      <TableCell align="center">Eliminar</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -156,43 +178,16 @@ function Home() {
                             ? producto.precioTotal.toFixed(2)
                             : ""}
                         </TableCell>
-                        <TableCell
-                          align="center"
-                          className="checkbox-container"
-                        >
-                          <label
-                            className={`checkbox-custom-label ${
-                              producto.pendiente ? "checked" : "unchecked"
-                            }`}
-                            htmlFor={`checkbox-${index}`}
-                          >
-                            <input
-                              type="checkbox"
-                              id={`checkbox-${index}`}
-                              checked={producto.pendiente}
-                              onChange={(e) => {
-                                const nuevosProductos = [
-                                  ...productosSeleccionados,
-                                ];
-                                nuevosProductos[index] = {
-                                  ...productosSeleccionados[index],
-                                  pendiente: e.target.checked,
-                                };
-                                setProductosSeleccionados(nuevosProductos);
-
-                                // Si está seleccionado como pendiente, establecer la cantidad pendiente
-                                if (e.target.checked) {
-                                  setCantidadPendiente(
-                                    productosSeleccionados[index].cantidad
-                                  );
-                                } else {
-                                  setCantidadPendiente(0);
-                                }
-                              }}
-                              style={{ display: "none" }} // Ocultar el checkbox predeterminado
-                            />
-                            <span className="checkbox-custom" />
-                          </label>
+                        <TableCell align="center" className="switch-container">
+                          <Switch
+                            checked={producto.pendiente || false}
+                            onChange={(e) => handleSwitchChange(index, e.target.checked)}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <IconButton onClick={() => eliminarProductoSeleccionado(index)}>
+                            <DeleteIcon />
+                          </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -207,12 +202,18 @@ function Home() {
             )}
 
             <div className="buttons-container">
-              <button className="cerrar-venta" onClick={cerrarVenta}>
+              <button className="cerrar-venta" onClick={actualizarInventario}>
                 Actualizar inventario
               </button>
             </div>
             <button className="agregar-producto" onClick={openModal}>
               <span>+</span> Agregar producto
+            </button>
+            <button
+              className="productos-pendientes"
+              onClick={() => (window.location.href = '/EstadoProductos')}
+            >
+              Estado de productos
             </button>
           </div>
         </div>

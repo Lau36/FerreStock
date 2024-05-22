@@ -137,6 +137,47 @@ const updateStatusOrder = async (orderId) => {
   return response;
 };
 
+const updateProductStock = async (productId, isPending, quantity) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+
+  const body = {
+    product_id: productId,
+    quantity: quantity,
+    is_pending: isPending.toString(),
+  };
+
+  try {
+    console.log("Sending request with body:", body);
+    const response = await axios.put(endpoints.products.updateStock, body, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product stock:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+const getProductsFiltred = async () => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+
+  const response = await axios.get(endpoints.products.getProducts, config);
+  const products = response.data;
+
+  // Filtrar solo los productos donde global_pending es true
+  const pendingProducts = products.filter(product => product.global_pending);
+
+  return pendingProducts;
+};
+
 const createOrder = async (body) => {
   const tokenAccess = localStorage.getItem("token");
   const config = {
@@ -152,15 +193,6 @@ const createOrder = async (body) => {
   return response.data;
 };
 
-export {
-  addProducts,
-  getProducts,
-  getProductDetails,
-  updateProduct,
-  getSedes,
-  getProductsSede,
-  getOrders,
-  updateStatusOrder,
-  createOrder,
-  deleteProduct,
-};
+
+export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder,updateProductStock, getProductsFiltred,createOrder,
+  deleteProduct };

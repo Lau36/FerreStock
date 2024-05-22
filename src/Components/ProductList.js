@@ -106,7 +106,7 @@ function ProductList({
       className="productos-grid"
       style={{ overflowY: "auto", borderRadius: "10px" }}
     >
-      {filteredProducts.map((producto) => (
+      {filteredProducts.map((producto, index) => (
         <div key={producto.id} className="producto-card">
           <div className="button-delete-product-container">
             <IconButton
@@ -122,12 +122,11 @@ function ProductList({
             style={{
               height: "auto",
               borderRadius: "10px",
-              // border: "1px solid",
             }}
           />
           <h3 style={{ textAlign: "center" }}>{producto.name}</h3>
           <p>${producto.price}</p>
-          <p>Disponible: {producto.stock}</p>
+          <p>Disponible: {producto.stock - producto.pending_stock}</p>
           {showAddButton && (
             <button
               className="agregar-button"
@@ -191,7 +190,7 @@ function ProductList({
               }}
             >
               <p>Precio: ${seleccionarProducto?.price}</p>
-              <p>Stock: {seleccionarProducto?.stock}</p>
+              <p>Stock: {seleccionarProducto?.stock }</p>
               <p>Pendiente en stock: {seleccionarProducto?.pending_stock}</p>
             </div>
             <div

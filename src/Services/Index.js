@@ -12,6 +12,7 @@ const endpoints = {
       `${URL}/inventory/products/users/?user=${sedeId}`,
     getOrders: `${URL}/inventory/orders/`,
     updateStatusOrders: `${URL}/inventory/order/update-order-status/`,
+    updateStock: `${URL}/inventory/products/pending/`,
     createOrder: `${URL}/inventory/order/create/`,
   },
   supplier: {

@@ -1,0 +1,64 @@
+.conteiner-product-status {
+    display: flex;
+    height: 80vh; 
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.conteiner-table-status {
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    margin-left: 50px;
+}
+
+.table-wrapper {
+    width: 100%; 
+}
+
+.conteiner-information-product {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; 
+    margin-left: 10px; 
+}
+
+.card-information {
+    width: 70%; 
+    padding: 20px;
+}
+
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+    border: 2px solid #000;
+    box-shadow: 24px;
+    padding: 16px;
+}
+
+.change-status {
+    margin: 20px auto;
+    background-color: #067206c3;
+    color: white;
+    border: none;
+    padding: 5px 10px; 
+    font-size: 14px; 
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .change-status:hover {
+    background-color: #4bcc00;
+  }

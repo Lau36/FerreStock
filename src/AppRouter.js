@@ -11,6 +11,7 @@ import Home from "./Home/Index";
 import Inventory from "./Inventory/Index.js";
 import Suppliers from "./Suppliers/Suppliers.jsx";
 import Orders from "./Orders/Orders.js";
+import ProductStatus from "./ProductStatus/Index.js";
 import CreateOrders from "./CreateOrders/Index.js";
 
 function AppRouter() {
@@ -29,6 +30,7 @@ function AppRouter() {
         <Route path="/Proveedores" element={<Suppliers />} />
         <Route path="/Pedidos" element={<Orders />} />
         <Route path="/Pedidos/Crear" element={<CreateOrders />} />
+        <Route path="/EstadoProductos" element={<ProductStatus />} />
       </Routes>
     </Router>
   );
