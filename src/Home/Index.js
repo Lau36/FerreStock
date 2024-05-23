@@ -2,7 +2,7 @@ import "../Home/Home.css";
 import Navbar from "../Components/Navbar";
 import React, { useState, useEffect } from "react";
 import AddProducts from "../Components/AddProducts";
-import { getProducts, updateProductStock } from "../Services/Products";
+import { getProducts, updateProductStock, updateProduct, updateStock } from "../Services/Products";
 import ProductList from "../Components/ProductList";
 import { Dialog } from "primereact/dialog";
 import { ReactComponent as SearchIcon } from "../Resources/lupa-de-busqueda.svg";
@@ -19,7 +19,8 @@ import {
 } from "@mui/material";
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 function Home() {
   const [productos, setProductos] = useState([]);
@@ -82,16 +83,32 @@ function Home() {
     setSearchTerm(event.target.value);
   };
 
+  const navigate = useNavigate();
+
   const actualizarInventario = async () => {
     for (const producto of productosSeleccionados) {
       try {
-        if (producto.pendiente === true){
+        if (producto.pendiente === true) {
           await updateProductStock(producto.id, producto.pendiente, producto.cantidad);
+        } else {
+          await updateStock(producto.id, producto.cantidad);
         }
+
       } catch (error) {
         console.error("Error al actualizar el inventario:", error);
       }
     }
+    Swal.fire({
+      icon: "success",
+      title: "Operación exitosa",
+      text: "Has actualizado tu inventario de forma exitosa",
+      confirmButtonText: "Continuar",
+      allowOutsideClick: false,
+      showCancelButton: false,
+    }).then(() => {
+      navigate("/Home");
+      window.location.reload();
+    });
     setProductosSeleccionados([]);
   };
 
