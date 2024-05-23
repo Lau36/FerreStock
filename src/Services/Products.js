@@ -193,6 +193,34 @@ const createOrder = async (body) => {
   return response.data;
 };
 
+const updateStock = async (productId, quantity) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
 
-export { addProducts, getProducts, getProductDetails, updateProduct, getSedes, getProductsSede, getOrders, updateStatusOrder,updateProductStock, getProductsFiltred,createOrder,
-  deleteProduct };
+  const body = {
+    product_id: productId,
+    quantity: quantity,
+  };
+
+  try {
+    console.log("Sending request with body:", body);
+    const response = await axios.put(endpoints.products.saleStock, body, config);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating product stock:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+
+export {
+  addProducts, getProducts, getProductDetails, 
+  updateProduct, getSedes, getProductsSede, 
+  getOrders, updateStatusOrder, updateProductStock, 
+  getProductsFiltred, createOrder, deleteProduct,
+  updateStock
+};

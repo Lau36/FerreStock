@@ -14,6 +14,7 @@ const endpoints = {
     updateStatusOrders: `${URL}/inventory/order/update-order-status/`,
     updateStock: `${URL}/inventory/products/pending/`,
     createOrder: `${URL}/inventory/order/create/`,
+    saleStock: `${URL}/inventory/products/sales/`,
   },
   supplier: {
     getSuppliers: `${URL}/inventory/suppliers/`,

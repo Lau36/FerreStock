@@ -17,6 +17,8 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { getProductsFiltred, updateProductStock } from "../Services/Products";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 /**
  * Funcion principal de la tabla con productos que estan en estado pendiente
@@ -67,6 +69,8 @@ function ProductStatus() {
         setnuevaCantidad(Number(event.target.value));
     };
 
+    const navigate = useNavigate();
+    
     // Funcion que llama servicio para guardar los cambios en la bd
     const guardarCambios = async () => {
         if (selectedProduct) {
@@ -81,6 +85,17 @@ function ProductStatus() {
             } catch (error) {
                 console.error("Error updating product stock:", error);
             }
+            Swal.fire({
+                icon: "success",
+                title: "Operación exitosa",
+                text: "Has actualizado tu inventario de forma exitosa",
+                confirmButtonText: "Continuar",
+                allowOutsideClick: false,
+                showCancelButton: false,
+              }).then(() => {
+                navigate("/EstadoProductos");
+                window.location.reload();
+              });
         }
     };
 
