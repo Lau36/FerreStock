@@ -7,7 +7,7 @@
 }
 
 .productos-grid::-webkit-scrollbar {
-   
+
     width: 10px;
 }
 
@@ -160,7 +160,8 @@
 
 .close-button-containerModal {
     position: absolute;
-    right: 10px; /* Ajusta la posición a la derecha */
+    right: 10px;
+    /* Ajusta la posición a la derecha */
     top: 10px;
 }
 
@@ -200,43 +201,92 @@
 
 
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /*Para cambiar el fondo entre más opaco o menos*/
-  z-index: 999; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    /*Para cambiar el fondo entre más opaco o menos*/
+    z-index: 999;
 }
 
 .modal-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000; 
-  padding: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 100px;
 }
 
-.dialog-update-product{
-    width: 50vw;  
-    padding: 10px;  
+.dialog-update-product {
+    width: 50vw;
+    padding: 10px;
 }
 
-.dialog-detail-product{
+.dialog-detail-product {
     width: 30vw;
     padding: 15px;
 }
 
-.dialog-update-product, .dialog-detail-product{
+.dialog-update-product,
+.dialog-detail-product {
     background: white;
     border: none;
     box-shadow: none;
     border-radius: 5px;
-     /*El padding de los modales*/
+    /*El padding de los modales*/
 }
 
-.button-delete-product-container{
+.button-delete-product-container {
     padding-left: 160px;
     margin-top: -20px;
+}
+
+/* ProductList.css */
+
+/* Estilo personalizado para el contenedor del Toast */
+.p-toast {
+    background-color: transparent;
+    /* Para hacer el contenedor principal transparente */
+}
+
+/* Estilo personalizado para el mensaje del Toast */
+.p-toast-message {
+    background-color: #ffcc00;
+    /* Cambia este color al que prefieras */
+    color: #000;
+    /* Color del texto */
+    border-radius: 10px;
+    /* Radio del borde */
+    padding: 1rem;
+    /* Relleno */
+    display: flex;
+    align-items: center;
+    /* Centrado vertical */
+    margin: 0.5rem 0;
+    /* Separación entre mensajes */
+}
+
+/* Estilo para la imagen del Toast */
+.p-toast-message .p-toast-message-content {
+    display: flex;
+    align-items: center;
+    /* Centrado vertical */
+}
+
+.p-toast-message-icon {
+    margin-right: 1rem;
+    /* Espacio entre la imagen y el texto */
+}
+
+/* Estilo para el encabezado del mensaje (summary) */
+.p-toast-summary {
+    font-weight: bold;
+}
+
+/* Estilo para el contenido del mensaje (detail) */
+.p-toast-detail {
+    font-size: 0.9rem;
 }

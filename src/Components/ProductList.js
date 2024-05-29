@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./ProductList.css";
 import { deleteProduct, getProductDetails } from "../Services/Products";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
+import { Toast } from 'primereact/toast';
 import defaultProductImage from "../Resources/herramientas.jpg";
 import UpdateProduct from "./UpdateProduct";
 import IconButton from "@mui/material/IconButton";
@@ -19,6 +20,7 @@ function ProductList({
   const [modal2, setModal2] = useState(false);
   const [seleccionarProducto, setSeleccionarProducto] = useState(null);
   const [product, setProduct] = useState(null);
+  const toast = useRef(null);
 
   const openModal = async (productId) => {
     try {
@@ -106,43 +108,57 @@ function ProductList({
       className="productos-grid"
       style={{ overflowY: "auto", borderRadius: "10px" }}
     >
-      {filteredProducts.map((producto, index) => (
-        <div key={producto.id} className="producto-card">
-          <div className="button-delete-product-container">
-            <IconButton
-              onClick={() => handleDelete(producto?.id)}
-              aria-label="delete"
-            >
-              <DeleteIcon style={{ color: "#CF3429" }} />
-            </IconButton>
-          </div>
-          <img
-            src={producto.image || defaultProductImage}
-            alt={producto.name}
-            style={{
-              height: "auto",
-              borderRadius: "10px",
-            }}
-          />
-          <h3 style={{ textAlign: "center" }}>{producto.name}</h3>
-          <p>${producto.price}</p>
-          <p>Disponible: {producto.stock - producto.pending_stock}</p>
-          {showAddButton && (
+      <Toast ref={toast} />
+      {filteredProducts.map((producto, index) => {
+        const availableStock = producto.stock - producto.pending_stock;
+
+        if (availableStock < 5) {
+          toast.current.show({
+            severity: "info",
+            summary: "Stock bajo",
+            detail: `El producto ${producto.name} tiene stock bajo (${availableStock} disponibles)`,
+            life: 10000 // 10 segundos
+          });
+        }
+
+        return (
+          <div key={producto.id} className="producto-card">
+            <div className="button-delete-product-container">
+              <IconButton
+                onClick={() => handleDelete(producto?.id)}
+                aria-label="delete"
+              >
+                <DeleteIcon style={{ color: "#CF3429" }} />
+              </IconButton>
+            </div>
+            <img
+              src={producto.image || defaultProductImage}
+              alt={producto.name}
+              style={{
+                height: "auto",
+                borderRadius: "10px",
+              }}
+            />
+            <h3 style={{ textAlign: "center" }}>{producto.name}</h3>
+            <p>${producto.price}</p>
+            <p>Disponible: {availableStock}</p>
+            {showAddButton && (
+              <button
+                className="agregar-button"
+                onClick={() => agregarProductoSeleccionado(producto)}
+              >
+                Agregar
+              </button>
+            )}
             <button
-              className="agregar-button"
-              onClick={() => agregarProductoSeleccionado(producto)}
+              className="detalles-button"
+              onClick={() => openModal(producto.id)}
             >
-              Agregar
+              Ver detalles
             </button>
-          )}
-          <button
-            className="detalles-button"
-            onClick={() => openModal(producto.id)}
-          >
-            Ver detalles
-          </button>
-        </div>
-      ))}
+          </div>
+        );
+      })}
 
       <div>
         {modalShow && <div className="overlay"></div>}
@@ -190,7 +206,7 @@ function ProductList({
               }}
             >
               <p>Precio: ${seleccionarProducto?.price}</p>
-              <p>Stock: {seleccionarProducto?.stock }</p>
+              <p>Stock: {seleccionarProducto?.stock}</p>
               <p>Pendiente en stock: {seleccionarProducto?.pending_stock}</p>
             </div>
             <div
