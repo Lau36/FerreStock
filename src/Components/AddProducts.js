@@ -13,12 +13,45 @@ function AddProducts({ closeModal }) {
     price: "",
     stock: "",
     pending_stock: "",
+    category: null,  // Nuevo campo añadido
   });
   const [loading, setLoading] = useState(false);
 
+
+  // Lista de categorías predefinidas
+  const categories = ["Herramientas manuales",
+    "Herramientas electricas",
+    "Ferreteria",
+    "Construccion",
+    "Pintura",
+    "Plomeria",
+    "Electricidad",
+    "Jardineria",
+    "Adhesivos y pegantes",
+  ];
+  const categoryImages = {
+    "Herramientas manuales": "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/sodimacCO/554340/w=1036,h=832,f=webp,fit=contain,q=85",
+    "Herramientas electricas": "https://homecenterco.scene7.com/is/image/SodimacCO/484299",
+    "Ferreteria": "https://media.istockphoto.com/id/170112853/es/foto/tuercas-y-pernos.jpg?s=612x612&w=0&k=20&c=5CyKF-WOuXKZpBIw5Ud05zKoCj_S3wZj3g3oX3V7B4c=",
+    "Construccion": "https://media.istockphoto.com/id/1456595707/es/foto/carretilla-y-bolsas-de-cemento-aisladas-sobre-blanco-materiales-de-construcci%C3%B3n.jpg?s=612x612&w=0&k=20&c=c32XxUyqVNCnATex3QWeJu0G2yHJyMKHU40HXAzGNrk=",
+    "Pintura": "https://media.istockphoto.com/id/170458766/es/foto/pintura-equipo.jpg?s=612x612&w=0&k=20&c=77LUesJPO50LmBOxQB8Q6tL0_YBf_bzNvVQRsnD01PA=",
+    "Plomeria": "https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/sodimacCO/212479_01/w=300,h=300,f=webp,fit=contain,q=85",
+    "Electricidad": "https://media.istockphoto.com/id/1478939666/es/foto/cubo-de-basura-con-l%C3%A1mparas-de-bajo-consumo-reciclaje.jpg?s=612x612&w=0&k=20&c=ypbp3IEV4_5MvRsvmz5GBc1DEPdOioaqeex4kzvqCYE=",
+    "Jardineria": "https://media.istockphoto.com/id/528915710/es/vector/vector-de-de-la-carretilla-con-jard%C3%ADn-y-accesorios.jpg?s=612x612&w=0&k=20&c=hceUyaeSIpwXsG054YWsfZJvQKpQZNjfd_ZvGjD0MfY=",
+    "Adhesivos y pegantes": "https://media.istockphoto.com/id/2150921508/es/foto/recorte-de-primer-plano-de-un-rollo-de-cinta-adhesiva-de-pvc-negro-de-aislamiento-el%C3%A9ctrico.jpg?s=612x612&w=0&k=20&c=9ZXOdQBBvvV3FZ2NILcZPACmxY2mA0DccAfZ-wpFGnc=",
+    "Default": "https://media.istockphoto.com/id/1178775481/es/vector/icono-de-herramientas-de-servicio-aislado-sobre-fondo-blanco-ilustraci%C3%B3n-vectorial.jpg?s=612x612&w=0&k=20&c=jarZzIW3iEZILi7h2Ca8Vt_z7e7bxm3O4omHPCEu5GA=",
+  };
+
+  const [categoryImage, setCategoryImage] = useState(categoryImages["Default"]);
+
   const handleChange = (e) => {
     setDataProduct({ ...dataProduct, [e.target.name]: e.target.value });
+    if (e.target.name === "category") {
+      setCategoryImage(categoryImages[e.target.value] || categoryImages["Default"]);
+    }
   };
+
+
 
   const handleSubmit = (e) => {
     setLoading(true);
@@ -74,6 +107,11 @@ function AddProducts({ closeModal }) {
         </div>
       ) : (
         <form className="form-products" onSubmit={handleSubmit}>
+          <div className="image-container-category">
+            <div className="category-image-container">
+              <img src={categoryImage} alt="Categoría" />
+            </div>
+          </div>
           <div className="form-up">
             <div className="row_ProductsLeft">
               <div className="input-group-products">
@@ -134,6 +172,23 @@ function AddProducts({ closeModal }) {
                   onChange={handleChange}
                   required
                 />
+              </div>
+              <div className="input-group-products">
+                <label className="label-product">Categoría</label>
+                <select
+                  className="form-control-products-select"
+                  name="category"
+                  value={dataProduct.category || ''} // Mantener el valor actual
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Selecciona una categoría</option> {/* Opción sin valor */}
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
