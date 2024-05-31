@@ -1,4 +1,4 @@
-.form-suppliers {
+.form-register-suppliers {
     background-color: #BBBFBA;
     overflow: hidden;
 }
@@ -263,5 +263,8 @@
 
     .w-100 {
         width: 95% !important;
+    }
+    .large-button{
+        width: 95%;
     }
   }

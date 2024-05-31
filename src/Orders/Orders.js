@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../Components/Navbar";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
+import ClearIcon from '@mui/icons-material/Clear';
 import Collapse from "@mui/material/Collapse";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -21,11 +24,12 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { getOrders, updateStatusOrder } from "../Services/Products";
+import { getOrders, updateStatusOrder, deleteOrder, deleteOrderItem } from "../Services/Products";
 import "./Orders.css";
 
+
 // Componente que representa una fila de la tabla
-function Row({ row }) {
+function Row({ row, handleDelete }) {
   const [open, setOpen] = useState(false); // Estado para controlar si la fila colapsable está abierta
   const [status, setStatus] = useState(row.status); // Estado para almacenar el estado actual
 
@@ -65,6 +69,49 @@ function Row({ row }) {
     }
   };
 
+  const handleDeleteItem = (orderItemId) => {
+    console.log("EL ID DEL PRODUCTO", orderItemId);
+    Swal.fire({
+      title: "Atención, estás seguro de realizar esta acción",
+      text: "Vas a eliminar un item de tu orden",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      showLoaderOnConfirm: true,
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Confirmar`,
+      allowOutsideClick: false,
+      cancelButtonText: "Cancelar",
+
+      preConfirm: () => {
+        return new Promise((resolve, reject) => {
+          deleteOrderItem(orderItemId)
+            .then((response) => {
+              Swal.fire({
+                icon: "success",
+                title: "Operación exitosa",
+                text: "El item fue eliminado correctamente",
+                confirmButtonText: "Continuar",
+                allowOutsideClick: false,
+                showCancelButton: false,
+              }).then(() => {
+                window.location.reload();
+              });
+            })
+            .catch((err) => {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Hubo un problema al eliminar el item. Por favor, inténtalo de nuevo.",
+              });
+              reject(err);
+            });
+        });
+      },
+    });
+  };
+
+
   return (
     <React.Fragment>
       {/* Fila principal */}
@@ -100,6 +147,15 @@ function Row({ row }) {
             </select>
           )}
         </TableCell>
+        {/* Celda con las acciones */}
+        <TableCell align="center">
+          <IconButton aria-label="edit" size="large" color="primary" onClick={""}>
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete" size="large" color="error" onClick={() => handleDelete(row.id_order)}>
+            <DeleteIcon />
+          </IconButton>
+        </TableCell>
       </TableRow>
       {/* Fila colapsable con los productos */}
       <TableRow>
@@ -116,6 +172,9 @@ function Row({ row }) {
                     <TableCell className="headercell" align="right">
                       Cantidad
                     </TableCell>
+                    <TableCell className="headercell" align="right">
+                      Eliminar
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -125,6 +184,11 @@ function Row({ row }) {
                         {item.product.name}
                       </TableCell>
                       <TableCell align="right">{item.quantity}</TableCell>
+                      <TableCell sx={{width:'1%'}} align="right">
+                      <IconButton aria-label="clear" size="small" color="error" onClick={() => handleDeleteItem(index)}>
+                        <ClearIcon />
+                      </IconButton>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -155,6 +219,7 @@ Row.propTypes = {
       })
     ).isRequired,
   }).isRequired,
+  handleDelete: PropTypes.func.isRequired,
 };
 
 // Componente principal que contiene la tabla completa
@@ -186,6 +251,48 @@ function CollapsibleTable() {
     order.supplier.company_name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const handleDelete = (orderId) => {
+    console.log("EL ID DEL PRODUCTO", orderId);
+    Swal.fire({
+      title: "Atención, estás seguro de realizar esta acción",
+      text: "Vas a eliminar una orden de tus pedidos",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      showLoaderOnConfirm: true,
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Confirmar`,
+      allowOutsideClick: false,
+      cancelButtonText: "Cancelar",
+
+      preConfirm: () => {
+        return new Promise((resolve, reject) => {
+          deleteOrder(orderId)
+            .then((response) => {
+              Swal.fire({
+                icon: "success",
+                title: "Operación exitosa",
+                text: "El producto fue eliminado correctamente",
+                confirmButtonText: "Continuar",
+                allowOutsideClick: false,
+                showCancelButton: false,
+              }).then(() => {
+                window.location.reload();
+              });
+            })
+            .catch((err) => {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Hubo un problema al eliminar la orden. Por favor, inténtalo de nuevo.",
+              });
+              reject(err);
+            });
+        });
+      },
+    });
+  };
+
   return (
     <TableContainer
       component={Paper}
@@ -215,11 +322,14 @@ function CollapsibleTable() {
             <TableCell className="headercell" align="center">
               Estado
             </TableCell>
+            <TableCell className="headercell" align="center">
+              Acciones
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {filteredOrders.map((order) => (
-            <Row key={order.id} row={order} />
+            <Row key={order.id_order} row={order} handleDelete={handleDelete} />
           ))}
         </TableBody>
       </Table>

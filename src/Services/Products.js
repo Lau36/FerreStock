@@ -216,11 +216,39 @@ const updateStock = async (productId, quantity) => {
   }
 };
 
+const deleteOrder = async (orderId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const response = await axios.delete(
+    endpoints.products.deleteOrder(orderId),
+    config
+  );
+  return response.data;
+};
+
+const deleteOrderItem = async (orderItemId) => {
+  const tokenAccess = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Authorization: `Token ${tokenAccess}`,
+    },
+  };
+  const response = await axios.delete(
+    endpoints.products.deleteOrderItem(orderItemId),
+    config
+  );
+  return response.data;
+};
+
 
 export {
   addProducts, getProducts, getProductDetails, 
   updateProduct, getSedes, getProductsSede, 
   getOrders, updateStatusOrder, updateProductStock, 
   getProductsFiltred, createOrder, deleteProduct,
-  updateStock
+  updateStock, deleteOrder, deleteOrderItem
 };

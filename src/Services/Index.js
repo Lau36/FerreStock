@@ -7,6 +7,8 @@ const endpoints = {
     getProductDetails: (productId) => `${URL}/inventory/products/${productId}/`,
     updateProduct: (productId) => `${URL}/inventory/products/${productId}/`,
     deleteProduct: (productId) => `${URL}/inventory/products/${productId}/`,
+    deleteOrder: (orderId) => `${URL}/inventory/order/delete/${orderId}/`,
+    deleteOrderItem: (orderItemId) => `${URL}/inventory/order-item/delete/${orderItemId}/`,
     getSedes: `${URL}/inventory/users/`,
     getProductsSede: (sedeId) =>
       `${URL}/inventory/products/users/?user=${sedeId}`,

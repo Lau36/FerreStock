@@ -76,7 +76,7 @@ function Suppliers() {
           />
         </div>
       ) : (
-        <div className="form-suppliers" >
+        <div className="form-register-suppliers" >
           <div className="py-3 h-100">
             <div className="py-5 h-100">
               <div className="row justify-content-center align-items-center h-100">
@@ -175,9 +175,9 @@ function Suppliers() {
                             </div>
                           </div>
                         </div>
-                        <div className="mt-4 pt-2">
+                        <div className="row mt-4 pt-2">
                           <button 
-                            className="btn btn-primary btn-lg d-flex align-items-center justify-content-center"
+                            className="btn btn-primary btn-lg d-flex align-items-center justify-content-center large-button"
                             type="submit"
                             onClick={handleSubmit}>                    
                             Registrar
