@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import ClearIcon from '@mui/icons-material/Clear';
 import Collapse from "@mui/material/Collapse";
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -149,9 +148,6 @@ function Row({ row, handleDelete }) {
         </TableCell>
         {/* Celda con las acciones */}
         <TableCell align="center">
-          <IconButton aria-label="edit" size="large" color="primary" onClick={""}>
-            <EditIcon />
-          </IconButton>
           <IconButton aria-label="delete" size="large" color="error" onClick={() => handleDelete(row.id_order)}>
             <DeleteIcon />
           </IconButton>
@@ -185,7 +181,7 @@ function Row({ row, handleDelete }) {
                       </TableCell>
                       <TableCell align="right">{item.quantity}</TableCell>
                       <TableCell sx={{width:'1%'}} align="right">
-                      <IconButton aria-label="clear" size="small" color="error" onClick={() => handleDeleteItem(index)}>
+                      <IconButton aria-label="clear" size="small" color="error" onClick={() => handleDeleteItem(item.id)}>
                         <ClearIcon />
                       </IconButton>
                       </TableCell>
@@ -227,6 +223,7 @@ function CollapsibleTable() {
   const [orders, setOrders] = useState([]); // Estado para almacenar los pedidos
   const [filter, setFilter] = useState(""); // Estado para almacenar el valor del filtro
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -336,7 +333,7 @@ function CollapsibleTable() {
       {/* SpeedDial para el botón circular */}
       <SpeedDial
         ariaLabel="SpeedDial example"
-        sx={{ position: "fixed", bottom: 16, right: 16 }}
+        sx={{ position: "fixed", bottom: 16, right: 16}}
         icon={<SpeedDialIcon />}
       >
         {/* Acción del botón circular */}

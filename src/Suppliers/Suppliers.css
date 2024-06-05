@@ -237,14 +237,20 @@
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 0.25rem;
+    width: 99%;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
   
   .btn-primary {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #30348C;
+    border-color: #30348C;
   }
+
+  .btn-primary:hover {
+    opacity: 0.8;
+  }
+
   
   .btn-lg {
     padding: 0.5rem 1rem; /* Aumenta el relleno para botones de tamaño grande */
