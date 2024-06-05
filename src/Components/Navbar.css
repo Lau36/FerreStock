@@ -1,29 +1,76 @@
-.imageNav{
-    height: 85px;
-    width: auto;
-    padding: 10px;
-  }
-  
-  .navbarListado {
-      list-style: none;
-      display: flex;
-      color: #000000;
-      margin: 0;
-      padding: 0;
-    }
-    
-    .navbarItems {
-      display: flex;
-      margin-left: auto; 
-      margin-top: 45px;
-      padding: 20px;
-    }
-    
-    .navbar-home {
-      text-decoration: none;
-      color: #000000;
-      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    
+.imageNav {
+  height: 85px;
+  width: auto;
+  padding: 10px;
+}
+
+.navbarListado {
+  list-style: none;
+  display: flex;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+.navbarItems {
+  display: flex;
+  margin-left: auto;
+  margin-top: 45px;
+  padding: 20px;
+}
+
+.navbar-home {
+  text-decoration: none;
+  color: #000000;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-content-logout {
+  background-color: white;
+  padding: 0 20px 20px;
+  border-radius: 8px;
+  width: 30%;
+  max-width: 60%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+
+.modal-logout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.button-modal-logout {
+  background-color: #30348C;
+  border: none;
+  height: 1.5rem;
+  border-radius: 5px;
+  color: white;
+  margin-right: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button-modal-logout:hover {
+  opacity: 0.8;
+  border: none;
+  color: white;
+  margin-right: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button-modal-logout:active {
+  transform: scale(0.9);
+}

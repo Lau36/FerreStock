@@ -13,13 +13,13 @@ function AddProducts({ closeModal }) {
     price: "",
     stock: "",
     pending_stock: "",
-    category: null,  // Nuevo campo añadido
+    category: null,
   });
   const [loading, setLoading] = useState(false);
 
-
   // Lista de categorías predefinidas
-  const categories = ["Herramientas manuales",
+  const categories = [
+    "Herramientas manuales",
     "Herramientas electricas",
     "Ferreteria",
     "Construccion",
@@ -50,8 +50,6 @@ function AddProducts({ closeModal }) {
       setCategoryImage(categoryImages[e.target.value] || categoryImages["Default"]);
     }
   };
-
-
 
   const handleSubmit = (e) => {
     setLoading(true);
@@ -113,8 +111,8 @@ function AddProducts({ closeModal }) {
             </div>
           </div>
           <div className="form-up">
-            <div className="row_ProductsLeft">
-              <div className="input-group-products">
+            <div className="row_Products">
+              <div className="input-group-products-top">
                 <label className="label-product">Nombre del producto</label>
                 <input
                   type="text"
@@ -125,20 +123,26 @@ function AddProducts({ closeModal }) {
                   required
                 />
               </div>
-              <div className="input-group-products">
-                <label className="label-product">
-                  Descripción del producto
-                </label>
-                <textarea
-                  type="text"
-                  className="input-description"
-                  name="description"
-                  placeholder="Descripcion del producto"
+              <div className="input-group-products-top">
+                <label className="label-product">Categoría</label>
+                <select
+                  className="form-control-products-select"
+                  name="category"
+                  value={dataProduct.category || ""}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Selecciona una categoría</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className="input-group-products">
+            </div>
+            <div className="row_Products">
+              <div className="input-group-products-top">
                 <label className="label-product">Cantidad de producto</label>
                 <input
                   type="number"
@@ -149,9 +153,7 @@ function AddProducts({ closeModal }) {
                   required
                 />
               </div>
-            </div>
-            <div className="row_ProductsRight">
-              <div className="input-group-products">
+              <div className="input-group-products-top">
                 <label className="label-product">Precio</label>
                 <input
                   type="text"
@@ -162,7 +164,7 @@ function AddProducts({ closeModal }) {
                   required
                 />
               </div>
-              <div className="input-group-products">
+              <div className="input-group-products-top">
                 <label className="label-product">Unidades separadas</label>
                 <input
                   type="number"
@@ -173,24 +175,18 @@ function AddProducts({ closeModal }) {
                   required
                 />
               </div>
-              <div className="input-group-products">
-                <label className="label-product">Categoría</label>
-                <select
-                  className="form-control-products-select"
-                  name="category"
-                  value={dataProduct.category || ''} // Mantener el valor actual
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Selecciona una categoría</option> {/* Opción sin valor */}
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
+          </div>
+          <div className="input-group-products-top">
+            <label className="label-product">Descripción del producto</label>
+            <textarea
+              type="text"
+              className="input-description"
+              name="description"
+              placeholder="Descripcion del producto"
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input-group-productsDown">
             <button type="submit" className="add_product_button">

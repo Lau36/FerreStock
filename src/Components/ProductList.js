@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ProductList.css";
 import { deleteProduct, getProductDetails } from "../Services/Products";
 import { Dialog } from "primereact/dialog";
@@ -34,6 +34,30 @@ function ProductList({
   const [seleccionarProducto, setSeleccionarProducto] = useState(null);
   const [product, setProduct] = useState(null);
   const toast = useRef(null);
+  const [toastShown, setToastShown] = useState(false);
+
+
+
+  useEffect(() => {
+    if (productos.length > 0 && !toastShown) {
+      productos.forEach((producto) => {
+        if (producto.stock != null && producto.pending_stock != null) {
+          const availableStock = producto.stock - producto.pending_stock;
+
+          if (availableStock < 5 && toast.current) {
+            toast.current.show({
+              severity: "info",
+              summary: "Stock bajo",
+              detail: `El producto ${producto.name} tiene stock bajo (${availableStock} disponibles)`,
+              life: 10000 // 10 segundos
+            });
+          }
+        }
+      });
+      setToastShown(true);
+    }
+  }, [productos, toastShown]);
+
 
   const openModal = async (productId) => {
     try {
@@ -123,19 +147,6 @@ function ProductList({
     >
       <Toast ref={toast} />
       {filteredProducts.map((producto, index) => {
-        if (producto && producto.stock != null && producto.pending_stock != null) {
-          const availableStock = producto.stock - producto.pending_stock;
-
-          if (availableStock < 5 && toast && toast.current) {
-            toast.current.show({
-              severity: "info",
-              summary: "Stock bajo",
-              detail: `El producto ${producto.name} tiene stock bajo (${availableStock} disponibles)`,
-              life: 10000 // 10 segundos
-            });
-          }
-        }
-
         // Determinar la imagen del producto según su categoría
         const productImage =
           producto.category && categoryImages[producto.category]
