@@ -140,7 +140,7 @@
   position: fixed;
   bottom: 20px;
   right: 220px;
-  background-color: #007bff;
+  background-color: #30348C;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -152,7 +152,7 @@
   position: fixed;
   bottom: 20px;
   right: 40px;
-  background-color: #007bff;
+  background-color: #30348C;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -161,11 +161,11 @@
 }
 
 .productos-pendientes:hover {
-  background-color: #0056b3;
+  opacity: 0.8;
 }
 
 .agregar-producto:hover {
-  background-color: #0056b3;
+  opacity: 0.8;
 }
 
 
